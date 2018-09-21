@@ -1,39 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import InputBlock from './InputBlock'
 
-const Dropdown = ({
-                    value,
-                    items,
-                    changeListener
-                  }) => {
+class Dropdown extends InputBlock {
 
-  const callback = (e) => {
-    if ('function' !== typeof(changeListener))
-      return
-    let value = e.target.value
-    if (value === '...') {
-      value = undefined
-    }
-    changeListener(value)
+  static propTypes = {
+    value: PropTypes.any,
+    items: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+      code: PropTypes.any
+    })).isRequired
   }
 
-  return (
-    <select value={value} onChange={callback}>
-      <option>...</option>
-      {
-        items.map(i => <option key={i.label} value={i.value}>{i.label}</option>)
-      }
-    </select>
-  )
-}
+  /** @Override */
+  valueExtract = event => {
+    let val = event.target.value
+    if (val === '...')
+      return undefined
+    return val
+  }
+  
+  /** @Override */
+  buildInputElement = changeListener => {
+    const { value, items } = this.props
 
-Dropdown.propTypes = {
-  value: PropTypes.any,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string,
-    value: PropTypes.any
-  })).isRequired,
-  changeListener: PropTypes.func
+    return (
+      <select value={value} onChange={changeListener}>
+        <option>...</option>
+        {
+          items.map(i => <option key={i.code} value={i.code}>{i.name}</option>)
+        }
+      </select>
+    )
+  }
 }
 
 export default Dropdown

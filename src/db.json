@@ -1,0 +1,39 @@
+{
+  "combobox-info": {
+    "bank": [
+      {"name": "Valiant", "code": "VABE"}
+    ],
+    "product": [
+      {
+        "name": "Fixed rate mortgage",
+        "code": "FIXED_RATE_MORTGAGE"
+      }, {
+        "name": "Family mortgage fixed",
+        "code": "FAMILY_MORTGAGE"
+      }, {
+        "name": "Flex mortgage",
+        "code": "FLEX_MORTGAGE"
+      }
+    ],
+    "business": [
+      { "name": "the first business", "code": "FIRST" },
+      { "name": "the second one business", "code": "SECOND" }
+    ],
+    "segment": ["VPK", "SKU", "MU"],
+    "businessCase": [
+      { "name": "New business", "code": "NEW" },
+      { "name": "Re-new business", "code": "RENEW" }
+    ],
+    "typeOfProperty": [
+      { "name": "Single house residence", "code": "SINGLE_HOUSE_RESIDENCE" },
+      { "name": "Apartment house residence", "code": "APARTMENT_HOUSE_RESIDENCE" },
+      { "name": "Condominium Office", "code": "CONDOMINIUM_OFFICE" }
+    ],
+    "ratingAgency": [
+      { "name": 1, "code": "ONE" },
+      { "name": 2, "code": "TWO" },
+      { "name": 3, "code": "THREE" },
+      { "name": 4, "code": "FOUR" }
+    ]
+  }
+}

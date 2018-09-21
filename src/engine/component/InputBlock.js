@@ -2,11 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class InputBlock extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
-  propTypes = {
+  static propTypes = {
     label: PropTypes.string,
     changeListener: PropTypes.func
   }
@@ -15,13 +12,13 @@ class InputBlock extends React.Component {
     const { label, changeListener } = this.props
     const callback = (event) => {
       if ('function' === typeof(changeListener))
-        changeListener(valueExtract(event))
+        changeListener(this.valueExtract(event))
     }
     return (
       <div className="input-block">
         <label>{label}</label>
         {
-          buildInputElement(callback)
+          this.buildInputElement(callback)
         }
       </div>
     )
@@ -37,4 +34,6 @@ class InputBlock extends React.Component {
   }
 
 }
+
+export default InputBlock
 
