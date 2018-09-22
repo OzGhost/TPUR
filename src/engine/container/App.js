@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Dropdown from '../component/Dropdown'
-import InputBlock from '../component/InputBlock'
+
+import InputCollector from '../container/InputCollector'
 import StaticStore from '../common/StaticStore'
 import { loadComboboxInput } from '../action'
 
@@ -22,8 +22,8 @@ class App extends React.Component {
     }
 
     return (
-      <div>
-        <Dropdown items={products} changeListener={change} />
+      <div className="TPUR-app">
+        <InputCollector />
       </div>
     )
   }

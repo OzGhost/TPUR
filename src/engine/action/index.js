@@ -1,4 +1,8 @@
 import { USER_INPUT_SIGNAL } from '../common/Constant'
+import GlobalConfig from '../common/GlobalConfig'
+
+const host = GlobalConfig.get('host')
+const comboboxInfoURI = host + GlobalConfig.get('comboboxInfoURI')
 
 export const UPDATE_USER_INPUT = 'User input updated'
 export const COMBOBOX_INFO_ARRIVED = 'Combo box info is arrived'
@@ -15,7 +19,7 @@ const update = (signal, key, value) => (
 )
 
 export const loadComboboxInput = () => dispatch => {
-  fetch('http://localhost:3000/combobox-info')
+  fetch(comboboxInfoURI)
     .then(res => res.json())
     .then(json => dispatch(comboboxInfoArrive(json)))
 }

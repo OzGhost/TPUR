@@ -22974,6 +22974,15 @@ exports.loadComboboxInput = exports.COMBOBOX_INFO_ARRIVED = exports.UPDATE_USER_
 
 var _Constant = require('../common/Constant');
 
+var _GlobalConfig = require('../common/GlobalConfig');
+
+var _GlobalConfig2 = _interopRequireDefault(_GlobalConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var host = _GlobalConfig2.default.get('host');
+var comboboxInfoURI = host + _GlobalConfig2.default.get('comboboxInfoURI');
+
 var UPDATE_USER_INPUT = exports.UPDATE_USER_INPUT = 'User input updated';
 var COMBOBOX_INFO_ARRIVED = exports.COMBOBOX_INFO_ARRIVED = 'Combo box info is arrived';
 
@@ -22992,7 +23001,7 @@ var update = function update(signal, key, value) {
 
 var loadComboboxInput = exports.loadComboboxInput = function loadComboboxInput() {
   return function (dispatch) {
-    fetch('http://localhost:3000/combobox-info').then(function (res) {
+    fetch(comboboxInfoURI).then(function (res) {
       return res.json();
     }).then(function (json) {
       return dispatch(comboboxInfoArrive(json));
@@ -23007,7 +23016,7 @@ var comboboxInfoArrive = function comboboxInfoArrive(data) {
   };
 };
 
-},{"../common/Constant":61}],61:[function(require,module,exports){
+},{"../common/Constant":61,"../common/GlobalConfig":62}],61:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23040,6 +23049,36 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var GlobalConfig = function GlobalConfig() {
+  var _this = this;
+
+  _classCallCheck(this, GlobalConfig);
+
+  this.configurations = {};
+
+  this.loadConfig = function () {
+    _this.configurations = window.TPUR.config;
+  };
+
+  this.get = function (key) {
+    return _this.configurations[key];
+  };
+};
+
+var GC = new GlobalConfig();
+GC.loadConfig();
+
+exports.default = GC;
+
+},{}],63:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23062,7 +23101,72 @@ var StaticStore = function StaticStore() {
 
 exports.default = new StaticStore();
 
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _InputBlock2 = require('./InputBlock');
+
+var _InputBlock3 = _interopRequireDefault(_InputBlock2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Checkbox = function (_InputBlock) {
+  _inherits(Checkbox, _InputBlock);
+
+  function Checkbox() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Checkbox);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call.apply(_ref, [this].concat(args))), _this), _this.extractValue = function (event) {
+      return event.target.checked;
+    }, _this.buildInputElement = function (changeListener) {
+      return _react2.default.createElement('input', {
+        type: 'checkbox',
+        onChange: changeListener,
+        checked: _this.props.value });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  /** @Override */
+
+
+  /** @Override */
+
+
+  return Checkbox;
+}(_InputBlock3.default);
+
+Checkbox.propTypes = {
+  label: _propTypes2.default.string,
+  value: _propTypes2.default.bool };
+exports.default = Checkbox;
+
+},{"./InputBlock":66,"prop-types":32,"react":54}],65:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23149,7 +23253,7 @@ Dropdown.propTypes = {
   })).isRequired };
 exports.default = Dropdown;
 
-},{"./InputBlock":64,"prop-types":32,"react":54}],64:[function(require,module,exports){
+},{"./InputBlock":66,"prop-types":32,"react":54}],66:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23223,7 +23327,202 @@ InputBlock.propTypes = {
 };
 exports.default = InputBlock;
 
-},{"prop-types":32,"react":54}],65:[function(require,module,exports){
+},{"prop-types":32,"react":54}],67:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _InputText = require('./InputText');
+
+var _InputText2 = _interopRequireDefault(_InputText);
+
+var _Dropdown = require('./Dropdown');
+
+var _Dropdown2 = _interopRequireDefault(_Dropdown);
+
+var _Checkbox = require('./Checkbox');
+
+var _Checkbox2 = _interopRequireDefault(_Checkbox);
+
+var _StaticStore = require('../common/StaticStore');
+
+var _StaticStore2 = _interopRequireDefault(_StaticStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var InputCollector = function InputCollector(_ref) {
+    var bank = _ref.bank,
+        product = _ref.product,
+        payoutDate = _ref.payoutDate,
+        etpFeasibility = _ref.etpFeasibility,
+        violationMinimalRequirement = _ref.violationMinimalRequirement,
+        foreignSurcharge = _ref.foreignSurcharge,
+        country = _ref.country,
+        segment = _ref.segment,
+        business = _ref.business,
+        contributionMargin = _ref.contributionMargin,
+        businessCase = _ref.businessCase,
+        typeOfProperty = _ref.typeOfProperty,
+        amount = _ref.amount,
+        marketValue = _ref.marketValue,
+        mortgageAmount = _ref.mortgageAmount,
+        rating = _ref.rating,
+        ratingAgency = _ref.ratingAgency;
+
+    var store = _StaticStore2.default.getStore();
+
+    return _react2.default.createElement(
+        'div',
+        { className: 'input-collector' },
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Bank',
+            items: store['bank'],
+            value: bank }),
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Product',
+            items: store['product'],
+            value: product }),
+        _react2.default.createElement(_InputText2.default, { label: 'Pay out date', value: payoutDate }),
+        _react2.default.createElement(_Checkbox2.default, {
+            label: 'ETP feasibility',
+            value: etpFeasibility }),
+        _react2.default.createElement(_Checkbox2.default, {
+            label: 'Violation minimal requirements',
+            value: violationMinimalRequirement }),
+        _react2.default.createElement(_Checkbox2.default, {
+            label: 'Foreign surcharge',
+            value: foreignSurcharge }),
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Country',
+            items: store['country'],
+            value: country }),
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Segment',
+            items: store['segment'],
+            value: segment }),
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Business',
+            items: store['business'],
+            value: business }),
+        _react2.default.createElement(_InputText2.default, { label: 'Contribution margin', value: contributionMargin }),
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Business Case',
+            items: store['businessCase'],
+            value: businessCase }),
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Type of Property/Type of Use',
+            items: store['typeOfProperty'],
+            value: typeOfProperty }),
+        _react2.default.createElement(_InputText2.default, { label: 'Amount in CHF', value: amount }),
+        _react2.default.createElement(_InputText2.default, { label: 'Market value in CHF', value: marketValue }),
+        _react2.default.createElement(_InputText2.default, { label: 'Mortgage amount in CHF', value: mortgageAmount }),
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Rating',
+            items: store['rating'],
+            value: rating }),
+        _react2.default.createElement(_Dropdown2.default, {
+            label: 'Rating Agency',
+            items: store['ratingAgency'],
+            value: ratingAgency }),
+        _react2.default.createElement(
+            'button',
+            null,
+            'Fill-in sample data'
+        )
+    );
+};
+
+InputCollector.propTypes = {
+    bank: _propTypes2.default.string,
+    product: _propTypes2.default.string,
+    payoutDate: _propTypes2.default.string,
+    etpFeasibility: _propTypes2.default.bool,
+    violationMinimalRequirement: _propTypes2.default.bool,
+    foreignSurcharge: _propTypes2.default.bool,
+    country: _propTypes2.default.string,
+    segment: _propTypes2.default.string,
+    business: _propTypes2.default.string,
+    contributionMargin: _propTypes2.default.number,
+    businessCase: _propTypes2.default.string,
+    typeOfProperty: _propTypes2.default.string,
+    amount: _propTypes2.default.number,
+    marketValue: _propTypes2.default.number,
+    mortgageAmount: _propTypes2.default.number,
+    rating: _propTypes2.default.string,
+    ratingAgency: _propTypes2.default.string
+};
+
+exports.default = InputCollector;
+
+},{"../common/StaticStore":63,"./Checkbox":64,"./Dropdown":65,"./InputText":68,"prop-types":32,"react":54}],68:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _InputBlock2 = require('./InputBlock');
+
+var _InputBlock3 = _interopRequireDefault(_InputBlock2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InputText = function (_InputBlock) {
+  _inherits(InputText, _InputBlock);
+
+  function InputText() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, InputText);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InputText.__proto__ || Object.getPrototypeOf(InputText)).call.apply(_ref, [this].concat(args))), _this), _this.buildInputElement = function (changeListener) {
+      return _react2.default.createElement('input', { type: 'text', onChange: changeListener, value: _this.props.value });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  /** @Override */
+
+
+  return InputText;
+}(_InputBlock3.default);
+
+InputText.propTypes = {
+  label: _propTypes2.default.string,
+  changeListener: _propTypes2.default.func,
+  value: _propTypes2.default.string };
+exports.default = InputText;
+
+},{"./InputBlock":66,"prop-types":32,"react":54}],69:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23236,13 +23535,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
 
-var _Dropdown = require('../component/Dropdown');
+var _InputCollector = require('../container/InputCollector');
 
-var _Dropdown2 = _interopRequireDefault(_Dropdown);
-
-var _InputBlock = require('../component/InputBlock');
-
-var _InputBlock2 = _interopRequireDefault(_InputBlock);
+var _InputCollector2 = _interopRequireDefault(_InputCollector);
 
 var _StaticStore = require('../common/StaticStore');
 
@@ -23285,8 +23580,8 @@ var App = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        null,
-        _react2.default.createElement(_Dropdown2.default, { items: products, changeListener: change })
+        { className: 'TPUR-app' },
+        _react2.default.createElement(_InputCollector2.default, null)
       );
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -23298,7 +23593,32 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return { isReady: state.isReady };
 })(App);
 
-},{"../action":60,"../common/StaticStore":62,"../component/Dropdown":63,"../component/InputBlock":64,"react":54,"react-redux":46}],66:[function(require,module,exports){
+},{"../action":60,"../common/StaticStore":63,"../container/InputCollector":70,"react":54,"react-redux":46}],70:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = require('react-redux');
+
+var _InputCollector = require('../component/InputCollector');
+
+var _InputCollector2 = _interopRequireDefault(_InputCollector);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var stateToProps = function stateToProps(state) {
+  return state.userInput;
+};
+
+exports.default = (0, _reactRedux.connect)(stateToProps)(_InputCollector2.default);
+
+},{"../component/InputCollector":67,"react":54,"react-redux":46}],71:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -23335,7 +23655,7 @@ var store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddlewar
   _react2.default.createElement(_App2.default, null)
 ), document.getElementById('frame'));
 
-},{"./container/App":65,"./reducer":69,"react":54,"react-dom":36,"react-redux":46,"redux":57,"redux-logger":55,"redux-thunk":56}],67:[function(require,module,exports){
+},{"./container/App":69,"./reducer":74,"react":54,"react-dom":36,"react-redux":46,"redux":57,"redux-logger":55,"redux-thunk":56}],72:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23363,7 +23683,7 @@ var IsReady = function IsReady() {
 
 exports.default = IsReady;
 
-},{"../action":60,"../common/StaticStore":62}],68:[function(require,module,exports){
+},{"../action":60,"../common/StaticStore":63}],73:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23378,30 +23698,28 @@ var _action = require('../action');
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-/*
-viewModal = {
-  bank: string,
-  product: string,
-  payoutDate: date,
-  etpFeasibility: boolean,
-  violationMinimalRequirement: boolean,
-  foreignSurcharge: boolean,
-  country: string,
-  segment: string,
-  business: string,
-  contributionMargin: number,
-  businessCase: string,
-  typeOfProperty: string,
-  amount: number,
-  marketValue: number,
-  mortgageAmount: number,
-  rating: number,
-  ratingAgency: string
-}
-*/
+var defaultViewModal = {
+  bank: undefined,
+  product: undefined,
+  payoutDate: undefined,
+  etpFeasibility: false,
+  violationMinimalRequirement: false,
+  foreignSurcharge: false,
+  country: undefined,
+  segment: undefined,
+  business: undefined,
+  contributionMargin: undefined,
+  businessCase: undefined,
+  typeOfProperty: undefined,
+  amount: undefined,
+  marketValue: undefined,
+  mortgageAmount: undefined,
+  rating: undefined,
+  ratingAgency: undefined
+};
 
 var UserInput = function UserInput() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultViewModal;
   var action = arguments[1];
 
   if (action.signal !== _Constant.USER_INPUT_SIGNAL) return state;
@@ -23417,7 +23735,7 @@ var UserInput = function UserInput() {
 
 exports.default = UserInput;
 
-},{"../action":60,"../common/Constant":61}],69:[function(require,module,exports){
+},{"../action":60,"../common/Constant":61}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23443,4 +23761,4 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./IsReady":67,"./UserInput":68,"redux":57}]},{},[66]);
+},{"./IsReady":72,"./UserInput":73,"redux":57}]},{},[71]);
