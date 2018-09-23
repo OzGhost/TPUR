@@ -1,53 +1,137 @@
 {
   "combobox-info": {
     "bank": [
-      {"name": "Valiant", "code": "VABE"}
+      {
+        "name": "Valiant",
+        "code": "VABE"
+      }
     ],
     "country": [
-      {"name": "SwizerLand", "code": "CH"},
-      {"name": "England", "code": "EN"},
-      {"name": "Viet Nam", "code": "VN"}
+      {
+        "name": "SwizerLand",
+        "code": "CH"
+      },
+      {
+        "name": "England",
+        "code": "EN"
+      },
+      {
+        "name": "Viet Nam",
+        "code": "VN"
+      }
     ],
     "product": [
       {
         "name": "Fixed rate mortgage",
         "code": "FIXED_RATE_MORTGAGE"
-      }, {
+      },
+      {
         "name": "Family mortgage fixed",
         "code": "FAMILY_MORTGAGE"
-      }, {
+      },
+      {
         "name": "Flex mortgage",
         "code": "FLEX_MORTGAGE"
       }
     ],
     "business": [
-      { "name": "the first business", "code": "FIRST" },
-      { "name": "the second one business", "code": "SECOND" }
+      {
+        "name": "the first business",
+        "code": "FIRST"
+      },
+      {
+        "name": "the second one business",
+        "code": "SECOND"
+      }
     ],
     "segment": [
-      { "name": "VPK", "code": "VPK"},
-      { "name": "SKU", "code": "SKU"},
-      { "name": "MU", "code": "MU"}
+      {
+        "name": "VPK",
+        "code": "VPK"
+      },
+      {
+        "name": "SKU",
+        "code": "SKU"
+      },
+      {
+        "name": "MU",
+        "code": "MU"
+      }
     ],
     "businessCase": [
-      { "name": "New business", "code": "NEW" },
-      { "name": "Re-new business", "code": "RENEW" }
+      {
+        "name": "New business",
+        "code": "NEW"
+      },
+      {
+        "name": "Re-new business",
+        "code": "RENEW"
+      }
     ],
     "typeOfProperty": [
-      { "name": "Single house residence", "code": "SINGLE_HOUSE_RESIDENCE" },
-      { "name": "Apartment house residence", "code": "APARTMENT_HOUSE_RESIDENCE" },
-      { "name": "Condominium Office", "code": "CONDOMINIUM_OFFICE" }
+      {
+        "name": "Single house residence",
+        "code": "SINGLE_HOUSE_RESIDENCE"
+      },
+      {
+        "name": "Apartment house residence",
+        "code": "APARTMENT_HOUSE_RESIDENCE"
+      },
+      {
+        "name": "Condominium Office",
+        "code": "CONDOMINIUM_OFFICE"
+      }
     ],
     "rating": [
-      { "name": "1", "code": "ONE" },
-      { "name": "2", "code": "TWO" },
-      { "name": "3", "code": "THREE" },
-      { "name": "4", "code": "FOUR" }
+      {
+        "name": "1",
+        "code": "ONE"
+      },
+      {
+        "name": "2",
+        "code": "TWO"
+      },
+      {
+        "name": "3",
+        "code": "THREE"
+      },
+      {
+        "name": "4",
+        "code": "FOUR"
+      }
     ],
     "ratingAgency": [
-      { "name": "RAUK", "code": "RAUK" },
-      { "name": "ROUD", "code": "ROUD" },
-      { "name": "RAND", "code": "RAND" }
+      {
+        "name": "RAUK",
+        "code": "RAUK"
+      },
+      {
+        "name": "ROUD",
+        "code": "ROUD"
+      },
+      {
+        "name": "RAND",
+        "code": "RAND"
+      }
     ]
+  },
+  "calculator": {
+    "bank": "",
+    "product": "",
+    "payoutDate": "23.09.2018",
+    "etpFeasibility": false,
+    "violationMinimalRequirement": false,
+    "foreignSurcharge": false,
+    "country": "",
+    "segment": "",
+    "business": "",
+    "contributionMargin": 0,
+    "businessCase": "",
+    "typeOfProperty": "",
+    "amount": 0,
+    "marketValue": 0,
+    "mortgageAmount": 0,
+    "rating": "",
+    "ratingAgency": ""
   }
 }

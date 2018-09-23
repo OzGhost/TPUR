@@ -1,119 +1,85 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+
 import InputText from './InputText'
 import InputNumber from './InputNumber'
 import Dropdown from './Dropdown'
 import Checkbox from './Checkbox'
 import StaticStore from '../common/StaticStore'
 
-import { updateUserInput  } from '../action'
+import { updateUserInput, autoFill, launch } from '../action'
 
-const InputCollector = ({
-                          bank
-                          ,product
-                          ,payoutDate
-                          ,etpFeasibility
-                          ,violationMinimalRequirement
-                          ,foreignSurcharge
-                          ,country
-                          ,segment
-                          ,business
-                          ,contributionMargin
-                          ,businessCase
-                          ,typeOfProperty
-                          ,amount
-                          ,marketValue
-                          ,mortgageAmount
-                          ,rating
-                          ,ratingAgency
-                          ,dispatch
-                        }) => {
+import { COMBOBOX_FIELDS_LABEL, COMBOBOX_FIELDS_NAME
+        , PAYOUT_DATE_FIELD_NAME
+        , ETP_FIELD_NAME
+        , VIOLATION_FIELD_NAME
+        , FOREIGN_SURCHARGE_FIELD_NAME
+        , CONTRIBUTION_MARGIN_FIELD_NAME
+        , AMOUNT_FIELD_NAME
+        , MARKET_VALUE_FIELD_NAME
+        , MORTGAGE_AMOUNT_FIELD_NAME
+        } from '../common/Constant'
+
+const InputCollector = (props) => {
   const store = StaticStore.getStore()
 
   const buildListener = fieldName => value => {
-    dispatch(updateUserInput(fieldName, value))
+    props.dispatch(updateUserInput(fieldName, value))
   }
 
   return (
     <div className="input-collector">
-      <Dropdown
-          label={'Bank'}
-          items={store['bank']}
-          value={bank}
-          changeListener={buildListener('bank')} />  
-      <Dropdown
-          label={'Product'}
-          items={store['product']}
-          value={product}
-          changeListener={buildListener('product')}/>
-      <InputText
-          label={'Pay out date'}
-          value={payoutDate}
-          changeListener={buildListener('payoutDate')}/>
+      {
+        COMBOBOX_FIELDS_NAME.map((fieldName, index) => {
+          return <Dropdown
+                    key={fieldName}
+                    label={COMBOBOX_FIELDS_LABEL[index]}
+                    items={store[fieldName]}
+                    value={props[fieldName]}
+                    changeListener={buildListener(fieldName)}
+          />
+        })
+      }
+
+      <DatePicker
+          selected={props[PAYOUT_DATE_FIELD_NAME]}
+          onChange={buildListener('payoutDate')}
+          dateFormat='DD.MM.YYYY'/>
+
       <Checkbox
           label={'ETP feasibility'}
-          value={etpFeasibility}
+          value={props[ETP_FIELD_NAME]}
           changeListener={buildListener('etpFeasibility')}/>
       <Checkbox
           label={'Violation minimal requirements'}
-          value={violationMinimalRequirement}
+          value={props[VIOLATION_FIELD_NAME]}
           changeListener={buildListener('violationMinimalRequirement')}/>
       <Checkbox
           label={'Foreign surcharge'}
-          value={foreignSurcharge}
+          value={props[FOREIGN_SURCHARGE_FIELD_NAME]}
           changeListener={buildListener('foreignSurcharge')}/>
-      <Dropdown
-          label={'Country'}
-          items={store['country']}
-          value={country}
-          changeListener={buildListener('country')}/>
-      <Dropdown
-          label={'Segment'}
-          items={store['segment']}
-          value={segment}
-          changeListener={buildListener('segment')}/>
-      <Dropdown
-          label={'Business'}
-          items={store['business']}
-          value={business}
-          changeListener={buildListener('business')}/>
+
       <InputNumber
           label={'Contribution margin'}
-          value={contributionMargin}
+          value={props[CONTRIBUTION_MARGIN_FIELD_NAME]}
           changeListener={buildListener('contributionMargin')}/>
-      <Dropdown
-          label={'Business Case'}
-          items={store['businessCase']}
-          value={businessCase}
-          changeListener={buildListener('businessCase')}/>
-      <Dropdown
-          label={'Type of Property/Type of Use'}
-          items={store['typeOfProperty']}
-          value={typeOfProperty}
-          changeListener={buildListener('typeOfProperty')}/>
       <InputNumber
           label={'Amount in CHF'}
-          value={amount}
+          value={props[AMOUNT_FIELD_NAME]}
           changeListener={buildListener('amount')}/>
       <InputNumber
           label={'Market value in CHF'}
-          value={marketValue}
+          value={props[MARKET_VALUE_FIELD_NAME]}
           changeListener={buildListener('marketValue')}/>
       <InputNumber
           label={'Mortgage amount in CHF'}
-          value={mortgageAmount}
+          value={props[MORTGAGE_AMOUNT_FIELD_NAME]}
           changeListener={buildListener('mortgageAmount')}/>
-      <Dropdown
-          label={'Rating'}
-          items={store['rating']}
-          value={rating}
-          changeListener={buildListener('rating')}/>
-      <Dropdown
-          label={'Rating Agency'}
-          items={store['ratingAgency']}
-          value={ratingAgency}
-          changeListener={buildListener('ratingAgency')}/>
-      <button>Fill-in sample data</button>
+
+      <button onClick={()=>props.dispatch(autoFill())}>Fill-in sample data</button>
+      <button onClick={()=>props.dispatch(launch())}>Calculate</button>
     </div>
   )
 }
@@ -121,7 +87,7 @@ const InputCollector = ({
 InputCollector.propTypes = {
   bank: PropTypes.string
   ,product: PropTypes.string
-  ,payoutDate: PropTypes.string
+  ,payoutDate: PropTypes.object
   ,etpFeasibility: PropTypes.bool
   ,violationMinimalRequirement: PropTypes.bool
   ,foreignSurcharge: PropTypes.bool

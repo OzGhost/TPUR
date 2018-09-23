@@ -1,20 +1,35 @@
 
 export const USER_INPUT_SIGNAL = 'User input is comming'
 
-export const BANK_FIELD = "bank"
-export const PRODUCT_FIELD = "product"
-export const PAYOUT_DATE_FIELD = "payoutDate"
-export const ETP_FIELD = "etpFeasibility"
-export const VIOLATION_FIELD = "violationMinimalRequirement"
-export const FOREIGN_SURCHARGE_FIELD = "foreignSurcharge"
-export const COUNTRY_FIELD = "country"
-export const SEGMENT_FIELD = "segment"
-export const BUSINESS_FIELD = "business"
-export const CONTRIBUTION_MARGIN_FIELD = "contributionMargin"
-export const BUSINESS_CASE_FIELD = "businessCase"
-export const PROPERTY_FIELD = "typeOfProperty"
-export const AMOUNT_FIELD = "amount"
-export const MARKET_VALUE_FIELD = "marketValue"
-export const MORTGAGE_AMOUNT_FIELD = "mortgageAmount"
-export const RATING_FIELD = "rating"
-export const RAING_AGENCY_FIELD= "ratingAgency"
+export const PAYOUT_DATE_FIELD_NAME = 'payoutDate'
+export const ETP_FIELD_NAME = 'etpFeasibility'
+export const VIOLATION_FIELD_NAME = 'violationMinimalRequirement'
+export const FOREIGN_SURCHARGE_FIELD_NAME = 'foreignSurcharge'
+export const CONTRIBUTION_MARGIN_FIELD_NAME = 'contributionMargin'
+export const AMOUNT_FIELD_NAME = 'amount'
+export const MARKET_VALUE_FIELD_NAME = 'marketValue'
+export const MORTGAGE_AMOUNT_FIELD_NAME = 'mortgageAmount'
+
+export const COMBOBOX_FIELDS_NAME = [
+                                      'bank'
+                                    , 'product'
+                                    , 'country'
+                                    , 'segment'
+                                    , 'business'
+                                    , 'businessCase'
+                                    , 'typeOfProperty'
+                                    , 'rating'
+                                    , 'ratingAgency'
+                                    ]
+
+export const COMBOBOX_FIELDS_LABEL = [
+                                      'Bank'
+                                    , 'Product'
+                                    , 'Country'
+                                    , 'Segment'
+                                    , 'Business'
+                                    , 'Business Case'
+                                    , 'Type of Property/Type of Use'
+                                    , 'Rating'
+                                    , 'Rating Agency'
+                                    ]
