@@ -1,21 +1,18 @@
 {
-  "name": "minorthesis",
+  "name": "TPUR",
   "version": "1.0.0",
   "description": "no desc",
-  "main": "dest/main.js",
+  "main": "dest/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OzGhost/minorthesis.git"
+    "url": "git+https://github.com/OzGhost/TPUR.git"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/OzGhost/minorthesis/issues"
-  },
-  "homepage": "https://github.com/OzGhost/minorthesis#readme",
+  "homepage": "https://github.com/OzGhost/tpur#readme",
   "dependencies": {
     "moment": "^2.22.2",
     "prop-types": "^15.6.1",
