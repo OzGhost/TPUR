@@ -9,7 +9,7 @@ class Checkbox extends InputBlock {
   }
 
   /** @Override */
-  extractValue = event => {
+  valueExtract = event => {
     return event.target.checked
   }
   

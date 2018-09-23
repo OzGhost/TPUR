@@ -7,7 +7,8 @@ const comboboxInfoURI = host + GlobalConfig.get('comboboxInfoURI')
 export const UPDATE_USER_INPUT = 'User input updated'
 export const COMBOBOX_INFO_ARRIVED = 'Combo box info is arrived'
 
-const updateUserInput = (key, value) => update(USER_INPUT_SIGNAL, key, value)
+export const updateUserInput = (key, value) =>
+  update(USER_INPUT_SIGNAL, key, value)
 
 const update = (signal, key, value) => (
   {

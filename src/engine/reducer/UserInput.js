@@ -2,23 +2,23 @@ import { USER_INPUT_SIGNAL } from '../common/Constant'
 import { UPDATE_USER_INPUT } from '../action'
 
 const defaultViewModal = {
-  bank: undefined,
-  product: undefined,
-  payoutDate: undefined,
+  bank: '',
+  product: '',
+  payoutDate: '',
   etpFeasibility: false,
   violationMinimalRequirement: false,
   foreignSurcharge: false,
-  country: undefined,
-  segment: undefined,
-  business: undefined,
-  contributionMargin: undefined,
-  businessCase: undefined,
-  typeOfProperty: undefined,
-  amount: undefined,
-  marketValue: undefined,
-  mortgageAmount: undefined,
-  rating: undefined,
-  ratingAgency: undefined
+  country: '',
+  segment: '',
+  business: '',
+  contributionMargin: 0,
+  businessCase: '',
+  typeOfProperty: '',
+  amount: 0,
+  marketValue: 0,
+  mortgageAmount: 0,
+  rating: '',
+  ratingAgency: ''
 }
 
 const UserInput = (state = defaultViewModal, action) => {

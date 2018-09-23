@@ -22970,7 +22970,7 @@ function symbolObservablePonyfill(root) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.loadComboboxInput = exports.COMBOBOX_INFO_ARRIVED = exports.UPDATE_USER_INPUT = undefined;
+exports.loadComboboxInput = exports.updateUserInput = exports.COMBOBOX_INFO_ARRIVED = exports.UPDATE_USER_INPUT = undefined;
 
 var _Constant = require('../common/Constant');
 
@@ -22986,7 +22986,7 @@ var comboboxInfoURI = host + _GlobalConfig2.default.get('comboboxInfoURI');
 var UPDATE_USER_INPUT = exports.UPDATE_USER_INPUT = 'User input updated';
 var COMBOBOX_INFO_ARRIVED = exports.COMBOBOX_INFO_ARRIVED = 'Combo box info is arrived';
 
-var updateUserInput = function updateUserInput(key, value) {
+var updateUserInput = exports.updateUserInput = function updateUserInput(key, value) {
   return update(_Constant.USER_INPUT_SIGNAL, key, value);
 };
 
@@ -23142,7 +23142,7 @@ var Checkbox = function (_InputBlock) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call.apply(_ref, [this].concat(args))), _this), _this.extractValue = function (event) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call.apply(_ref, [this].concat(args))), _this), _this.valueExtract = function (event) {
       return event.target.checked;
     }, _this.buildInputElement = function (changeListener) {
       return _react2.default.createElement('input', {
@@ -23346,6 +23346,10 @@ var _InputText = require('./InputText');
 
 var _InputText2 = _interopRequireDefault(_InputText);
 
+var _InputNumber = require('./InputNumber');
+
+var _InputNumber2 = _interopRequireDefault(_InputNumber);
+
 var _Dropdown = require('./Dropdown');
 
 var _Dropdown2 = _interopRequireDefault(_Dropdown);
@@ -23357,6 +23361,8 @@ var _Checkbox2 = _interopRequireDefault(_Checkbox);
 var _StaticStore = require('../common/StaticStore');
 
 var _StaticStore2 = _interopRequireDefault(_StaticStore);
+
+var _action = require('../action');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23377,9 +23383,16 @@ var InputCollector = function InputCollector(_ref) {
         marketValue = _ref.marketValue,
         mortgageAmount = _ref.mortgageAmount,
         rating = _ref.rating,
-        ratingAgency = _ref.ratingAgency;
+        ratingAgency = _ref.ratingAgency,
+        dispatch = _ref.dispatch;
 
     var store = _StaticStore2.default.getStore();
+
+    var buildListener = function buildListener(fieldName) {
+        return function (value) {
+            dispatch((0, _action.updateUserInput)(fieldName, value));
+        };
+    };
 
     return _react2.default.createElement(
         'div',
@@ -23387,53 +23400,80 @@ var InputCollector = function InputCollector(_ref) {
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Bank',
             items: store['bank'],
-            value: bank }),
+            value: bank,
+            changeListener: buildListener('bank') }),
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Product',
             items: store['product'],
-            value: product }),
-        _react2.default.createElement(_InputText2.default, { label: 'Pay out date', value: payoutDate }),
+            value: product,
+            changeListener: buildListener('product') }),
+        _react2.default.createElement(_InputText2.default, {
+            label: 'Pay out date',
+            value: payoutDate,
+            changeListener: buildListener('payoutDate') }),
         _react2.default.createElement(_Checkbox2.default, {
             label: 'ETP feasibility',
-            value: etpFeasibility }),
+            value: etpFeasibility,
+            changeListener: buildListener('etpFeasibility') }),
         _react2.default.createElement(_Checkbox2.default, {
             label: 'Violation minimal requirements',
-            value: violationMinimalRequirement }),
+            value: violationMinimalRequirement,
+            changeListener: buildListener('violationMinimalRequirement') }),
         _react2.default.createElement(_Checkbox2.default, {
             label: 'Foreign surcharge',
-            value: foreignSurcharge }),
+            value: foreignSurcharge,
+            changeListener: buildListener('foreignSurcharge') }),
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Country',
             items: store['country'],
-            value: country }),
+            value: country,
+            changeListener: buildListener('country') }),
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Segment',
             items: store['segment'],
-            value: segment }),
+            value: segment,
+            changeListener: buildListener('segment') }),
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Business',
             items: store['business'],
-            value: business }),
-        _react2.default.createElement(_InputText2.default, { label: 'Contribution margin', value: contributionMargin }),
+            value: business,
+            changeListener: buildListener('business') }),
+        _react2.default.createElement(_InputNumber2.default, {
+            label: 'Contribution margin',
+            value: contributionMargin,
+            changeListener: buildListener('contributionMargin') }),
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Business Case',
             items: store['businessCase'],
-            value: businessCase }),
+            value: businessCase,
+            changeListener: buildListener('businessCase') }),
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Type of Property/Type of Use',
             items: store['typeOfProperty'],
-            value: typeOfProperty }),
-        _react2.default.createElement(_InputText2.default, { label: 'Amount in CHF', value: amount }),
-        _react2.default.createElement(_InputText2.default, { label: 'Market value in CHF', value: marketValue }),
-        _react2.default.createElement(_InputText2.default, { label: 'Mortgage amount in CHF', value: mortgageAmount }),
+            value: typeOfProperty,
+            changeListener: buildListener('typeOfProperty') }),
+        _react2.default.createElement(_InputNumber2.default, {
+            label: 'Amount in CHF',
+            value: amount,
+            changeListener: buildListener('amount') }),
+        _react2.default.createElement(_InputNumber2.default, {
+            label: 'Market value in CHF',
+            value: marketValue,
+            changeListener: buildListener('marketValue') }),
+        _react2.default.createElement(_InputNumber2.default, {
+            label: 'Mortgage amount in CHF',
+            value: mortgageAmount,
+            changeListener: buildListener('mortgageAmount') }),
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Rating',
             items: store['rating'],
-            value: rating }),
+            value: rating,
+            changeListener: buildListener('rating') }),
         _react2.default.createElement(_Dropdown2.default, {
             label: 'Rating Agency',
             items: store['ratingAgency'],
-            value: ratingAgency }),
+            value: ratingAgency,
+            changeListener: buildListener('ratingAgency') }),
         _react2.default.createElement(
             'button',
             null,
@@ -23464,7 +23504,66 @@ InputCollector.propTypes = {
 
 exports.default = InputCollector;
 
-},{"../common/StaticStore":63,"./Checkbox":64,"./Dropdown":65,"./InputText":68,"prop-types":32,"react":54}],68:[function(require,module,exports){
+},{"../action":60,"../common/StaticStore":63,"./Checkbox":64,"./Dropdown":65,"./InputNumber":68,"./InputText":69,"prop-types":32,"react":54}],68:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _InputText2 = require('./InputText');
+
+var _InputText3 = _interopRequireDefault(_InputText2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InputNumber = function (_InputText) {
+  _inherits(InputNumber, _InputText);
+
+  function InputNumber() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, InputNumber);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InputNumber.__proto__ || Object.getPrototypeOf(InputNumber)).call.apply(_ref, [this].concat(args))), _this), _this.valueExtract = function (event) {
+      var val = Number(event.target.value);
+      return isNaN(val) ? 0 : val;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  /** @Override */
+
+
+  return InputNumber;
+}(_InputText3.default);
+
+InputNumber.propTypes = {
+  label: _propTypes2.default.string,
+  changeListener: _propTypes2.default.func,
+  value: _propTypes2.default.number };
+exports.default = InputNumber;
+
+},{"./InputText":69,"prop-types":32,"react":54}],69:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23522,7 +23621,7 @@ InputText.propTypes = {
   value: _propTypes2.default.string };
 exports.default = InputText;
 
-},{"./InputBlock":66,"prop-types":32,"react":54}],69:[function(require,module,exports){
+},{"./InputBlock":66,"prop-types":32,"react":54}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23593,7 +23692,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return { isReady: state.isReady };
 })(App);
 
-},{"../action":60,"../common/StaticStore":63,"../container/InputCollector":70,"react":54,"react-redux":46}],70:[function(require,module,exports){
+},{"../action":60,"../common/StaticStore":63,"../container/InputCollector":71,"react":54,"react-redux":46}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23618,7 +23717,7 @@ var stateToProps = function stateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(stateToProps)(_InputCollector2.default);
 
-},{"../component/InputCollector":67,"react":54,"react-redux":46}],71:[function(require,module,exports){
+},{"../component/InputCollector":67,"react":54,"react-redux":46}],72:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -23655,7 +23754,7 @@ var store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddlewar
   _react2.default.createElement(_App2.default, null)
 ), document.getElementById('frame'));
 
-},{"./container/App":69,"./reducer":74,"react":54,"react-dom":36,"react-redux":46,"redux":57,"redux-logger":55,"redux-thunk":56}],72:[function(require,module,exports){
+},{"./container/App":70,"./reducer":75,"react":54,"react-dom":36,"react-redux":46,"redux":57,"redux-logger":55,"redux-thunk":56}],73:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23683,7 +23782,7 @@ var IsReady = function IsReady() {
 
 exports.default = IsReady;
 
-},{"../action":60,"../common/StaticStore":63}],73:[function(require,module,exports){
+},{"../action":60,"../common/StaticStore":63}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23699,23 +23798,23 @@ var _action = require('../action');
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var defaultViewModal = {
-  bank: undefined,
-  product: undefined,
-  payoutDate: undefined,
+  bank: '',
+  product: '',
+  payoutDate: '',
   etpFeasibility: false,
   violationMinimalRequirement: false,
   foreignSurcharge: false,
-  country: undefined,
-  segment: undefined,
-  business: undefined,
-  contributionMargin: undefined,
-  businessCase: undefined,
-  typeOfProperty: undefined,
-  amount: undefined,
-  marketValue: undefined,
-  mortgageAmount: undefined,
-  rating: undefined,
-  ratingAgency: undefined
+  country: '',
+  segment: '',
+  business: '',
+  contributionMargin: 0,
+  businessCase: '',
+  typeOfProperty: '',
+  amount: 0,
+  marketValue: 0,
+  mortgageAmount: 0,
+  rating: '',
+  ratingAgency: ''
 };
 
 var UserInput = function UserInput() {
@@ -23735,7 +23834,7 @@ var UserInput = function UserInput() {
 
 exports.default = UserInput;
 
-},{"../action":60,"../common/Constant":61}],74:[function(require,module,exports){
+},{"../action":60,"../common/Constant":61}],75:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23761,4 +23860,4 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./IsReady":72,"./UserInput":73,"redux":57}]},{},[71]);
+},{"./IsReady":73,"./UserInput":74,"redux":57}]},{},[72]);
