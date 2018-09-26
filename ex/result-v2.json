@@ -1,0 +1,26 @@
+{
+  "expiryDate": "08.10.2018",
+  "calculationResults": [
+    {
+      "ruleResults": {
+        "MARKET_BALANCING": 20,
+        "COMPETENCE_LEVEL_7": null,
+        "COMPETENCE_LEVEL_8": null,
+        "COMPETENCE_LEVEL_5": 0.6,
+        "COMPETENCE_LEVEL_6": 1,
+        "COMPETENCE_LEVEL_3": 0.3,
+        "COMPETENCE_LEVEL_4": 0.5,
+        "COMPETENCE_LEVEL_1": 0.1,
+        "COMPETENCE_LEVEL_2": 0.2,
+        "FLOOR": 115,
+        "RECOMMENDED_INTEREST_RATE": 115,
+        "SURCHARGE": 10,
+        "MINIMAL_OFFER": 105
+      }
+    }
+  ],
+  "calculationFile": {
+    "fileContent": "...",
+    "hashCode": "0f7c0d4dea88da2dc3dbc0ca650a241ef32565d62d513ac9a5163402169f386d"
+  }
+}

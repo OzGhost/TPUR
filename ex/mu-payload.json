@@ -1,0 +1,49 @@
+{
+  "bankCode": "VABE",
+  "languageCode": "en",
+  "dossier": {
+    "calculationBase": {
+      "businessCase": {
+        "businessCreationType": "NEW"
+      },
+      "funding": {
+        "segment": "SKU",
+        "propertyType": "APARTMENT_HOUSE_RESIDENCE",
+        "rating": "ONE",
+        "marketValue": 80000,
+        "mortgageAmount": 60000,
+        "ratingAgency": "RAUK",
+        "business": "SEWAGE_DISPOSAL",
+        "contributionMargin": 3000
+      },
+      "financialCheck": {
+        "etpFeasibility": true,
+        "violationMinRequirements": true
+      }
+    },
+    "product": {
+      "currentTranche": {
+        "productCode": "FIXED_RATE_MORTGAGE",
+        "amountPiece": 80000,
+        "payOutDate": "02.06.2018",
+        "period": 2
+      }
+    },
+    "debtorManagement": {
+      "debtors": [
+        {
+          "person": {
+            "firstName": "user English",
+            "lastName": "john",
+            "nationality": "country-1"
+          },
+          "address": {
+            "zipCode": "3715",
+            "city": "Adelboden",
+            "country": "country-1"
+          }
+        }
+      ]
+    }
+  }
+}
