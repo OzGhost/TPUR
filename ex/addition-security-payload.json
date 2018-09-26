@@ -1,0 +1,62 @@
+{
+  "bankCode": "VABE",
+  "languageCode": "DE",
+  "dossier": {
+    "debtorManagement": {
+      "debtors": [
+        {
+          "personalNumber": 0,
+          "person": {
+            "nationality": "Switzerland"
+          },
+          "address": {
+            "country": "string"
+          },
+          "debtorCreationType": "EXISTED"
+        }
+      ]
+    },
+    "product": {
+      "currentTranche": {
+        "productCode": "FAMILY_MORTGAGE",
+        "amountPiece": 1100000,
+        "period": 1,
+        "payOutDate": "11.04.2018",
+        "recommendedInterestRate": 999
+      }
+    },
+    "calculationBase": {
+      "businessCase": {
+        "businessCreationType": "NEW"
+      },
+      "funding": {
+        "segment": "VPK",
+        "propertyType": "SINGLE_HOUSE_RESIDENCE",
+        "rating": "ONE",
+        "marketValue": 1200000,
+        "mortgageAmount": 1300000,
+        "ratingAgency": "RADL"
+      },
+      "financialCheck": {
+        "etpFeasibility": true,
+        "violationMinRequirements": true,
+        "additionalSecurityManagement": {
+          "additionalSecurities": [
+            {
+              "amount": 100000,
+              "additionalSecurity": "CREDIT_OWN_BANK"
+            },
+            {
+              "amount": 333333,
+              "additionalSecurity": "CREDIT_PILLAR_3_OWN_BANK"
+            },
+            {
+              "amount": 111111,
+              "additionalSecurity": "CREDIT_PILLAR_3_OWN_BANK"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
