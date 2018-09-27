@@ -116,22 +116,52 @@
     ]
   },
   "calculator": {
-    "bank": "",
-    "product": "",
-    "payoutDate": "23.09.2018",
-    "etpFeasibility": false,
-    "violationMinimalRequirement": false,
-    "foreignSurcharge": false,
-    "country": "",
-    "segment": "",
-    "business": "",
-    "contributionMargin": 0,
-    "businessCase": "",
-    "typeOfProperty": "",
-    "amount": 0,
-    "marketValue": 0,
-    "mortgageAmount": 0,
-    "rating": "",
-    "ratingAgency": ""
+    "bankCode": "VABE",
+    "languageCode": "en",
+    "dossier": {
+      "calculationBase": {
+        "businessCase": {
+          "businessCreationType": "NEW"
+        },
+        "funding": {
+          "segment": "VPK",
+          "propertyType": "SINGLE_HOUSE_RESIDENCE",
+          "rating": "ONE",
+          "marketValue": 60000,
+          "mortgageAmount": 80000,
+          "ratingAgency": "RAUK",
+          "business": "FIRST",
+          "contributionMargin": 50000
+        },
+        "financialCheck": {
+          "etpFeasibility": true,
+          "violationMinRequirements": true
+        }
+      },
+      "product": {
+        "currentTranche": {
+          "productCode": "FIXED_RATE_MORTGAGE",
+          "amountPiece": 40000,
+          "payOutDate": "07.10.2018",
+          "period": 2
+        }
+      },
+      "debtorManagement": {
+        "debtors": [
+          {
+            "person": {
+              "firstName": "Christina",
+              "lastName": "Lange",
+              "nationality": "country-1"
+            },
+            "address": {
+              "zipCode": "70000",
+              "city": "HCM",
+              "country": "country-1"
+            }
+          }
+        ]
+      }
+    }
   }
 }
