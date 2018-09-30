@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
 
 import InputText from './InputText'
 import InputNumber from './InputNumber'
+import InputDate from './InputDate'
 import Dropdown from './Dropdown'
-import Checkbox from './Checkbox'
+import InputBool from './InputBool'
 import StaticStore from '../common/StaticStore'
 
 import { updateUserInput, autoFill, launch } from '../action'
@@ -43,23 +42,26 @@ const InputCollector = (props) => {
         })
       }
 
-      <DatePicker
-          selected={props[PAYOUT_DATE_FIELD_NAME]}
-          onChange={buildListener('payoutDate')}
-          dateFormat='DD.MM.YYYY'/>
+      <InputDate
+          label={'Payout Date'}
+          value={props[PAYOUT_DATE_FIELD_NAME]}
+          changeListener={buildListener('payoutDate')}/>
+      <br/>
 
-      <Checkbox
+      <InputBool
           label={'ETP feasibility'}
           value={props[ETP_FIELD_NAME]}
           changeListener={buildListener('etpFeasibility')}/>
-      <Checkbox
+      <InputBool
           label={'Violation minimal requirements'}
           value={props[VIOLATION_FIELD_NAME]}
           changeListener={buildListener('violationMinimalRequirement')}/>
-      <Checkbox
+      <InputBool
           label={'Foreign surcharge'}
           value={props[FOREIGN_SURCHARGE_FIELD_NAME]}
           changeListener={buildListener('foreignSurcharge')}/>
+
+      <br/>
 
       <InputNumber
           label={'Contribution margin'}
@@ -78,8 +80,12 @@ const InputCollector = (props) => {
           value={props[MORTGAGE_AMOUNT_FIELD_NAME]}
           changeListener={buildListener('mortgageAmount')}/>
 
-      <button onClick={()=>props.dispatch(autoFill())}>Fill-in sample data</button>
-      <button onClick={()=>props.dispatch(launch())}>Calculate</button>
+      <br/>
+
+      <div className="action-block">
+        <button onClick={()=>props.dispatch(autoFill())}>Fill-in sample data</button>
+        <button onClick={()=>props.dispatch(launch())}>Calculate</button>
+      </div>
     </div>
   )
 }

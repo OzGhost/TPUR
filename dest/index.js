@@ -35601,65 +35601,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require('react');
+var StringUtil = {
 
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _InputBlock2 = require('./InputBlock');
-
-var _InputBlock3 = _interopRequireDefault(_InputBlock2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Checkbox = function (_InputBlock) {
-  _inherits(Checkbox, _InputBlock);
-
-  function Checkbox() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, Checkbox);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call.apply(_ref, [this].concat(args))), _this), _this.valueExtract = function (event) {
-      return event.target.checked;
-    }, _this.buildInputElement = function (changeListener) {
-      return _react2.default.createElement('input', {
-        type: 'checkbox',
-        onChange: changeListener,
-        checked: _this.props.value });
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+  eliminateSpace: function eliminateSpace(input) {
+    if (typeof input !== 'string') return '';
+    return input.replace(' ', '_');
   }
 
-  /** @Override */
+};
 
+exports.default = StringUtil;
 
-  /** @Override */
-
-
-  return Checkbox;
-}(_InputBlock3.default);
-
-Checkbox.propTypes = {
-  label: _propTypes2.default.string,
-  value: _propTypes2.default.bool };
-exports.default = Checkbox;
-
-},{"./InputBlock":64,"prop-types":21,"react":46}],63:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35791,6 +35744,10 @@ var InputBlock = function (_React$Component) {
       var callback = function callback(event) {
         if ('function' === typeof changeListener) changeListener(_this.valueExtract(event));
       };
+      return _this.toDOM(label, callback);
+    }, _this.valueExtract = function (event) {
+      return event.target.value;
+    }, _this.toDOM = function (label, callback) {
       return _react2.default.createElement(
         'div',
         { className: 'input-block' },
@@ -35801,8 +35758,6 @@ var InputBlock = function (_React$Component) {
         ),
         _this.buildInputElement(callback)
       );
-    }, _this.valueExtract = function (event) {
-      return event.target.value;
     }, _this.buildInputElement = function (changeListener) {
       return _react2.default.createElement('i', null);
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -35824,7 +35779,7 @@ exports.default = InputBlock;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _react = require('react');
@@ -35835,13 +35790,88 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactDatepicker = require('react-datepicker');
+var _InputBlock2 = require('./InputBlock');
 
-var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+var _InputBlock3 = _interopRequireDefault(_InputBlock2);
 
-var _moment = require('moment');
+var _StringUtil = require('../common/StringUtil');
 
-var _moment2 = _interopRequireDefault(_moment);
+var _StringUtil2 = _interopRequireDefault(_StringUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InputBool = function (_InputBlock) {
+  _inherits(InputBool, _InputBlock);
+
+  function InputBool() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, InputBool);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InputBool.__proto__ || Object.getPrototypeOf(InputBool)).call.apply(_ref, [this].concat(args))), _this), _this.valueExtract = function (event) {
+      return event.target.checked;
+    }, _this.toDOM = function (label, callback) {
+      var id = _StringUtil2.default.eliminateSpace(label);
+      return _react2.default.createElement(
+        'div',
+        { className: 'input-block' },
+        _react2.default.createElement('input', {
+          id: id,
+          type: 'checkbox',
+          onChange: callback,
+          checked: _this.props.value }),
+        _react2.default.createElement(
+          'label',
+          { className: 'input__bool', htmlFor: id },
+          ' ',
+          label,
+          ' '
+        )
+      );
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  /** @Override */
+
+
+  /** @Override */
+
+
+  return InputBool;
+}(_InputBlock3.default);
+
+InputBool.propTypes = {
+  label: _propTypes2.default.string,
+  changeListener: _propTypes2.default.func,
+  value: _propTypes2.default.bool };
+exports.default = InputBool;
+
+},{"../common/StringUtil":62,"./InputBlock":64,"prop-types":21,"react":46}],66:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _InputText = require('./InputText');
 
@@ -35851,13 +35881,17 @@ var _InputNumber = require('./InputNumber');
 
 var _InputNumber2 = _interopRequireDefault(_InputNumber);
 
+var _InputDate = require('./InputDate');
+
+var _InputDate2 = _interopRequireDefault(_InputDate);
+
 var _Dropdown = require('./Dropdown');
 
 var _Dropdown2 = _interopRequireDefault(_Dropdown);
 
-var _Checkbox = require('./Checkbox');
+var _InputBool = require('./InputBool');
 
-var _Checkbox2 = _interopRequireDefault(_Checkbox);
+var _InputBool2 = _interopRequireDefault(_InputBool);
 
 var _StaticStore = require('../common/StaticStore');
 
@@ -35870,98 +35904,170 @@ var _Constant = require('../common/Constant');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var InputCollector = function InputCollector(props) {
-    var store = _StaticStore2.default.getStore();
+  var store = _StaticStore2.default.getStore();
 
-    var buildListener = function buildListener(fieldName) {
-        return function (value) {
-            props.dispatch((0, _action.updateUserInput)(fieldName, value));
-        };
+  var buildListener = function buildListener(fieldName) {
+    return function (value) {
+      props.dispatch((0, _action.updateUserInput)(fieldName, value));
     };
+  };
 
-    return _react2.default.createElement(
-        'div',
-        { className: 'input-collector' },
-        _Constant.COMBOBOX_FIELDS_NAME.map(function (fieldName, index) {
-            return _react2.default.createElement(_Dropdown2.default, {
-                key: fieldName,
-                label: _Constant.COMBOBOX_FIELDS_LABEL[index],
-                items: store[fieldName],
-                value: props[fieldName],
-                changeListener: buildListener(fieldName)
-            });
-        }),
-        _react2.default.createElement(_reactDatepicker2.default, {
-            selected: props[_Constant.PAYOUT_DATE_FIELD_NAME],
-            onChange: buildListener('payoutDate'),
-            dateFormat: 'DD.MM.YYYY' }),
-        _react2.default.createElement(_Checkbox2.default, {
-            label: 'ETP feasibility',
-            value: props[_Constant.ETP_FIELD_NAME],
-            changeListener: buildListener('etpFeasibility') }),
-        _react2.default.createElement(_Checkbox2.default, {
-            label: 'Violation minimal requirements',
-            value: props[_Constant.VIOLATION_FIELD_NAME],
-            changeListener: buildListener('violationMinimalRequirement') }),
-        _react2.default.createElement(_Checkbox2.default, {
-            label: 'Foreign surcharge',
-            value: props[_Constant.FOREIGN_SURCHARGE_FIELD_NAME],
-            changeListener: buildListener('foreignSurcharge') }),
-        _react2.default.createElement(_InputNumber2.default, {
-            label: 'Contribution margin',
-            value: props[_Constant.CONTRIBUTION_MARGIN_FIELD_NAME],
-            changeListener: buildListener('contributionMargin') }),
-        _react2.default.createElement(_InputNumber2.default, {
-            label: 'Amount in CHF',
-            value: props[_Constant.AMOUNT_FIELD_NAME],
-            changeListener: buildListener('amount') }),
-        _react2.default.createElement(_InputNumber2.default, {
-            label: 'Market value in CHF',
-            value: props[_Constant.MARKET_VALUE_FIELD_NAME],
-            changeListener: buildListener('marketValue') }),
-        _react2.default.createElement(_InputNumber2.default, {
-            label: 'Mortgage amount in CHF',
-            value: props[_Constant.MORTGAGE_AMOUNT_FIELD_NAME],
-            changeListener: buildListener('mortgageAmount') }),
-        _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                    return props.dispatch((0, _action.autoFill)());
-                } },
-            'Fill-in sample data'
-        ),
-        _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                    return props.dispatch((0, _action.launch)());
-                } },
-            'Calculate'
-        )
-    );
+  return _react2.default.createElement(
+    'div',
+    { className: 'input-collector' },
+    _Constant.COMBOBOX_FIELDS_NAME.map(function (fieldName, index) {
+      return _react2.default.createElement(_Dropdown2.default, {
+        key: fieldName,
+        label: _Constant.COMBOBOX_FIELDS_LABEL[index],
+        items: store[fieldName],
+        value: props[fieldName],
+        changeListener: buildListener(fieldName)
+      });
+    }),
+    _react2.default.createElement(_InputDate2.default, {
+      label: 'Payout Date',
+      value: props[_Constant.PAYOUT_DATE_FIELD_NAME],
+      changeListener: buildListener('payoutDate') }),
+    _react2.default.createElement('br', null),
+    _react2.default.createElement(_InputBool2.default, {
+      label: 'ETP feasibility',
+      value: props[_Constant.ETP_FIELD_NAME],
+      changeListener: buildListener('etpFeasibility') }),
+    _react2.default.createElement(_InputBool2.default, {
+      label: 'Violation minimal requirements',
+      value: props[_Constant.VIOLATION_FIELD_NAME],
+      changeListener: buildListener('violationMinimalRequirement') }),
+    _react2.default.createElement(_InputBool2.default, {
+      label: 'Foreign surcharge',
+      value: props[_Constant.FOREIGN_SURCHARGE_FIELD_NAME],
+      changeListener: buildListener('foreignSurcharge') }),
+    _react2.default.createElement('br', null),
+    _react2.default.createElement(_InputNumber2.default, {
+      label: 'Contribution margin',
+      value: props[_Constant.CONTRIBUTION_MARGIN_FIELD_NAME],
+      changeListener: buildListener('contributionMargin') }),
+    _react2.default.createElement(_InputNumber2.default, {
+      label: 'Amount in CHF',
+      value: props[_Constant.AMOUNT_FIELD_NAME],
+      changeListener: buildListener('amount') }),
+    _react2.default.createElement(_InputNumber2.default, {
+      label: 'Market value in CHF',
+      value: props[_Constant.MARKET_VALUE_FIELD_NAME],
+      changeListener: buildListener('marketValue') }),
+    _react2.default.createElement(_InputNumber2.default, {
+      label: 'Mortgage amount in CHF',
+      value: props[_Constant.MORTGAGE_AMOUNT_FIELD_NAME],
+      changeListener: buildListener('mortgageAmount') }),
+    _react2.default.createElement('br', null),
+    _react2.default.createElement(
+      'div',
+      { className: 'action-block' },
+      _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return props.dispatch((0, _action.autoFill)());
+          } },
+        'Fill-in sample data'
+      ),
+      _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return props.dispatch((0, _action.launch)());
+          } },
+        'Calculate'
+      )
+    )
+  );
 };
 
 InputCollector.propTypes = {
-    bank: _propTypes2.default.string,
-    product: _propTypes2.default.string,
-    payoutDate: _propTypes2.default.object,
-    etpFeasibility: _propTypes2.default.bool,
-    violationMinimalRequirement: _propTypes2.default.bool,
-    foreignSurcharge: _propTypes2.default.bool,
-    country: _propTypes2.default.string,
-    segment: _propTypes2.default.string,
-    business: _propTypes2.default.string,
-    contributionMargin: _propTypes2.default.number,
-    businessCase: _propTypes2.default.string,
-    typeOfProperty: _propTypes2.default.string,
-    amount: _propTypes2.default.number,
-    marketValue: _propTypes2.default.number,
-    mortgageAmount: _propTypes2.default.number,
-    rating: _propTypes2.default.string,
-    ratingAgency: _propTypes2.default.string
+  bank: _propTypes2.default.string,
+  product: _propTypes2.default.string,
+  payoutDate: _propTypes2.default.object,
+  etpFeasibility: _propTypes2.default.bool,
+  violationMinimalRequirement: _propTypes2.default.bool,
+  foreignSurcharge: _propTypes2.default.bool,
+  country: _propTypes2.default.string,
+  segment: _propTypes2.default.string,
+  business: _propTypes2.default.string,
+  contributionMargin: _propTypes2.default.number,
+  businessCase: _propTypes2.default.string,
+  typeOfProperty: _propTypes2.default.string,
+  amount: _propTypes2.default.number,
+  marketValue: _propTypes2.default.number,
+  mortgageAmount: _propTypes2.default.number,
+  rating: _propTypes2.default.string,
+  ratingAgency: _propTypes2.default.string
 };
 
 exports.default = InputCollector;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":61,"./Checkbox":62,"./Dropdown":63,"./InputNumber":66,"./InputText":67,"moment":14,"prop-types":21,"react":46,"react-datepicker":23}],66:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":61,"./Dropdown":63,"./InputBool":65,"./InputDate":67,"./InputNumber":68,"./InputText":69,"prop-types":21,"react":46}],67:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _InputBlock2 = require('./InputBlock');
+
+var _InputBlock3 = _interopRequireDefault(_InputBlock2);
+
+var _reactDatepicker = require('react-datepicker');
+
+var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InputDate = function (_InputBlock) {
+  _inherits(InputDate, _InputBlock);
+
+  function InputDate() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, InputDate);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InputDate.__proto__ || Object.getPrototypeOf(InputDate)).call.apply(_ref, [this].concat(args))), _this), _this.buildInputElement = function (changeListener) {
+      return _react2.default.createElement(_reactDatepicker2.default, {
+        selected: _this.props.value,
+        onChange: changeListener,
+        dateFormat: 'DD.MM.YYYY' });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  /** @Override */
+
+
+  return InputDate;
+}(_InputBlock3.default);
+
+InputDate.propTypes = {
+  label: _propTypes2.default.string,
+  changeListener: _propTypes2.default.func,
+  value: _propTypes2.default.object };
+exports.default = InputDate;
+
+},{"./InputBlock":64,"prop-types":21,"react":46,"react-datepicker":23}],68:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36020,7 +36126,7 @@ InputNumber.propTypes = {
   value: _propTypes2.default.number };
 exports.default = InputNumber;
 
-},{"./InputText":67,"prop-types":21,"react":46}],67:[function(require,module,exports){
+},{"./InputText":69,"prop-types":21,"react":46}],69:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36078,7 +36184,7 @@ InputText.propTypes = {
   value: _propTypes2.default.string };
 exports.default = InputText;
 
-},{"./InputBlock":64,"prop-types":21,"react":46}],68:[function(require,module,exports){
+},{"./InputBlock":64,"prop-types":21,"react":46}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36174,7 +36280,7 @@ ResultTable.propTypes = {
 };
 exports.default = ResultTable;
 
-},{"./TableRow":69,"prop-types":21,"react":46}],69:[function(require,module,exports){
+},{"./TableRow":71,"prop-types":21,"react":46}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36249,7 +36355,7 @@ TableRow.propTypes = {
 };
 exports.default = TableRow;
 
-},{"prop-types":21,"react":46}],70:[function(require,module,exports){
+},{"prop-types":21,"react":46}],72:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36325,7 +36431,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return { isReady: state.isReady };
 })(App);
 
-},{"../action":58,"../common/StaticStore":61,"../container/InputCollector":71,"../container/ResultTable":72,"react":46,"react-redux":38}],71:[function(require,module,exports){
+},{"../action":58,"../common/StaticStore":61,"../container/InputCollector":73,"../container/ResultTable":74,"react":46,"react-redux":38}],73:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36350,7 +36456,7 @@ var stateToProps = function stateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(stateToProps)(_InputCollector2.default);
 
-},{"../component/InputCollector":65,"react":46,"react-redux":38}],72:[function(require,module,exports){
+},{"../component/InputCollector":66,"react":46,"react-redux":38}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36373,7 +36479,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return state.calculationResult;
 })(_ResultTable2.default);
 
-},{"../component/ResultTable":68,"react":46,"react-redux":38}],73:[function(require,module,exports){
+},{"../component/ResultTable":70,"react":46,"react-redux":38}],75:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -36410,7 +36516,7 @@ var store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddlewar
   _react2.default.createElement(_App2.default, null)
 ), document.getElementById('frame'));
 
-},{"./container/App":70,"./reducer":77,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],74:[function(require,module,exports){
+},{"./container/App":72,"./reducer":79,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36436,7 +36542,7 @@ var CalculationResult = function CalculationResult() {
 
 exports.default = CalculationResult;
 
-},{"../action":58}],75:[function(require,module,exports){
+},{"../action":58}],77:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36464,7 +36570,7 @@ var IsReady = function IsReady() {
 
 exports.default = IsReady;
 
-},{"../action":58,"../common/StaticStore":61}],76:[function(require,module,exports){
+},{"../action":58,"../common/StaticStore":61}],78:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36554,7 +36660,7 @@ var UserInput = function UserInput() {
 
 exports.default = UserInput;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":61,"moment":14}],77:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":61,"moment":14}],79:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36585,4 +36691,4 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./CalculationResult":74,"./IsReady":75,"./UserInput":76,"redux":49}]},{},[73]);
+},{"./CalculationResult":76,"./IsReady":77,"./UserInput":78,"redux":49}]},{},[75]);

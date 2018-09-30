@@ -14,6 +14,14 @@ class InputBlock extends React.Component {
       if ('function' === typeof(changeListener))
         changeListener(this.valueExtract(event))
     }
+    return this.toDOM(label, callback)
+  }
+
+  valueExtract = event => {
+    return event.target.value
+  }
+
+  toDOM = (label, callback) => {
     return (
       <div className="input-block">
         <label>{label}</label>
@@ -22,10 +30,6 @@ class InputBlock extends React.Component {
         }
       </div>
     )
-  }
-
-  valueExtract = event => {
-    return event.target.value
   }
 
   /** @Abstract */
