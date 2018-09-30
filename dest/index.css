@@ -55,4 +55,5 @@
     max-width: 80px; }
   .result-table .row__header {
     background: black;
-    color: white; }
+    color: white;
+    border-color: white; }

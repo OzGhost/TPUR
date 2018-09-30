@@ -36217,7 +36217,7 @@ var TableRow = function (_React$Component) {
           cells = _this$props.cells,
           header = _this$props.header;
 
-      var headClazz = header ? ' row_header' : '';
+      var headClazz = header ? ' row__header' : '';
       var labelClazz = 'row__label' + headClazz;
       var cellClazz = 'row__cell' + headClazz;
       return _react2.default.createElement(

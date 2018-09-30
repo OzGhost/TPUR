@@ -11,7 +11,7 @@ class TableRow extends React.Component {
 
   render = () => {
     const { label, cells, header } = this.props
-    const headClazz = header ? ' row_header' : ''
+    const headClazz = header ? ' row__header' : ''
     const labelClazz = 'row__label' + headClazz
     const cellClazz = 'row__cell' + headClazz
     return (
