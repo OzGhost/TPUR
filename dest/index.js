@@ -36085,6 +36085,177 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _TableRow = require('./TableRow');
+
+var _TableRow2 = _interopRequireDefault(_TableRow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ResultTable = function (_React$Component) {
+  _inherits(ResultTable, _React$Component);
+
+  function ResultTable() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, ResultTable);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ResultTable.__proto__ || Object.getPrototypeOf(ResultTable)).call.apply(_ref, [this].concat(args))), _this), _this.convertResultToRows = function (results) {
+      if (!Array.isArray(results) || results.length < 1) return [];
+
+      var keys = Object.keys(results[0]['ruleResults']);
+      keys.sort();
+      return keys.map(function (key) {
+        var row = {};
+        row.key = key;
+        row.label = key;
+        row.cells = results.map(function (item) {
+          return item['ruleResults'][key];
+        });
+        return row;
+      });
+    }, _this.extractColumnHeader = function (results) {
+      if (!Array.isArray(results) || results.length < 1) return undefined;
+
+      var header = {};
+      header.key = 'resultTableHeader';
+      header.label = 'Category \\ Period';
+      header.cells = results.map(function (item, index) {
+        return item.period || '__' + index;
+      });
+      return header;
+    }, _this.render = function () {
+      var rows = _this.convertResultToRows(_this.props.calculationResults);
+      var thead = _this.extractColumnHeader(_this.props.calculationResults);
+      return _react2.default.createElement(
+        'table',
+        { className: 'result-table' },
+        _react2.default.createElement(
+          'tbody',
+          null,
+          thead && _react2.default.createElement(_TableRow2.default, _extends({}, thead, { header: true })),
+          rows.map(function (row) {
+            return _react2.default.createElement(_TableRow2.default, _extends({ key: row.key }, row));
+          })
+        )
+      );
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  return ResultTable;
+}(_react2.default.Component);
+
+ResultTable.propTypes = {
+  calculationResults: _propTypes2.default.arrayOf(_propTypes2.default.shape({
+    period: _propTypes2.default.number,
+    ruleResults: _propTypes2.default.object.isRequired
+  }))
+};
+exports.default = ResultTable;
+
+},{"./TableRow":69,"prop-types":21,"react":46}],69:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TableRow = function (_React$Component) {
+  _inherits(TableRow, _React$Component);
+
+  function TableRow() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, TableRow);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TableRow.__proto__ || Object.getPrototypeOf(TableRow)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+      var _this$props = _this.props,
+          label = _this$props.label,
+          cells = _this$props.cells,
+          header = _this$props.header;
+
+      var headClazz = header ? ' row_header' : '';
+      var labelClazz = 'row__label' + headClazz;
+      var cellClazz = 'row__cell' + headClazz;
+      return _react2.default.createElement(
+        'tr',
+        null,
+        label ? _react2.default.createElement(
+          'td',
+          { className: labelClazz, title: label },
+          label
+        ) : label,
+        cells.map(function (val, index) {
+          return _react2.default.createElement(
+            'td',
+            { className: cellClazz, title: val, key: index },
+            val
+          );
+        })
+      );
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  return TableRow;
+}(_react2.default.Component);
+
+TableRow.propTypes = {
+  label: _propTypes2.default.string,
+  cells: _propTypes2.default.array.isRequired,
+  header: _propTypes2.default.bool
+};
+exports.default = TableRow;
+
+},{"prop-types":21,"react":46}],70:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -36094,6 +36265,10 @@ var _reactRedux = require('react-redux');
 var _InputCollector = require('../container/InputCollector');
 
 var _InputCollector2 = _interopRequireDefault(_InputCollector);
+
+var _ResultTable = require('../container/ResultTable');
+
+var _ResultTable2 = _interopRequireDefault(_ResultTable);
 
 var _StaticStore = require('../common/StaticStore');
 
@@ -36137,7 +36312,8 @@ var App = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { className: 'TPUR-app' },
-        _react2.default.createElement(_InputCollector2.default, null)
+        _react2.default.createElement(_InputCollector2.default, null),
+        _react2.default.createElement(_ResultTable2.default, null)
       );
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -36149,7 +36325,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return { isReady: state.isReady };
 })(App);
 
-},{"../action":58,"../common/StaticStore":61,"../container/InputCollector":69,"react":46,"react-redux":38}],69:[function(require,module,exports){
+},{"../action":58,"../common/StaticStore":61,"../container/InputCollector":71,"../container/ResultTable":72,"react":46,"react-redux":38}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36174,7 +36350,30 @@ var stateToProps = function stateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(stateToProps)(_InputCollector2.default);
 
-},{"../component/InputCollector":65,"react":46,"react-redux":38}],70:[function(require,module,exports){
+},{"../component/InputCollector":65,"react":46,"react-redux":38}],72:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = require('react-redux');
+
+var _ResultTable = require('../component/ResultTable');
+
+var _ResultTable2 = _interopRequireDefault(_ResultTable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _reactRedux.connect)(function (state) {
+  return state.calculationResult;
+})(_ResultTable2.default);
+
+},{"../component/ResultTable":68,"react":46,"react-redux":38}],73:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -36211,7 +36410,7 @@ var store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddlewar
   _react2.default.createElement(_App2.default, null)
 ), document.getElementById('frame'));
 
-},{"./container/App":68,"./reducer":74,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],71:[function(require,module,exports){
+},{"./container/App":70,"./reducer":77,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36237,7 +36436,7 @@ var CalculationResult = function CalculationResult() {
 
 exports.default = CalculationResult;
 
-},{"../action":58}],72:[function(require,module,exports){
+},{"../action":58}],75:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36265,7 +36464,7 @@ var IsReady = function IsReady() {
 
 exports.default = IsReady;
 
-},{"../action":58,"../common/StaticStore":61}],73:[function(require,module,exports){
+},{"../action":58,"../common/StaticStore":61}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36355,7 +36554,7 @@ var UserInput = function UserInput() {
 
 exports.default = UserInput;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":61,"moment":14}],74:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":61,"moment":14}],77:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36386,4 +36585,4 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./CalculationResult":71,"./IsReady":72,"./UserInput":73,"redux":49}]},{},[70]);
+},{"./CalculationResult":74,"./IsReady":75,"./UserInput":76,"redux":49}]},{},[73]);

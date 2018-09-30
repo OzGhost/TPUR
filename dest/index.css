@@ -37,3 +37,22 @@
     transform: rotate(0deg); }
   to {
     transform: rotate(360deg); } }
+
+.result-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 40px 0; }
+  .result-table td {
+    border: 1px solid black;
+    padding: 4px 6px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
+  .result-table .row__label {
+    font-weight: bold; }
+  .result-table .row__cell {
+    max-width: 80px; }
+  .result-table .row__header {
+    background: black;
+    color: white; }

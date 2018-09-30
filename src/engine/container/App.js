@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import InputCollector from '../container/InputCollector'
+import ResultTable from '../container/ResultTable'
 import StaticStore from '../common/StaticStore'
 import { loadComboboxInput } from '../action'
 
@@ -24,6 +25,7 @@ class App extends React.Component {
     return (
       <div className="TPUR-app">
         <InputCollector />
+        <ResultTable />
       </div>
     )
   }
