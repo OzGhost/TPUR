@@ -1,4 +1,5 @@
 const path = require('path')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = function(grunt) {
   grunt.initConfig({
@@ -59,7 +60,10 @@ module.exports = function(grunt) {
           filename: 'index_webpack.js',
           path: path.resolve(__dirname, 'dest')
         },
-        mode: 'development',
+        mode: 'production',
+        optimization: {
+          minimizer: [new UglifyJsPlugin()]
+        },
         module: {
           rules: [
             {
