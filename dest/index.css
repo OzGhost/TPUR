@@ -1,38 +1,152 @@
-.ic-loading {
+.blocker__ground {
+  display: block;
+  font-size: 0;
+  height: 0;
+  width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
   position: fixed;
-  height: 100vh;
-  width: 100vw;
-  background: rgba(64, 64, 64, 0.5);
   top: 0;
   left: 0;
-  z-index: 1000; }
-  .ic-loading:before, .ic-loading:after {
+  z-index: -1; }
+  .blocker__ground:before, .blocker__ground:after {
     content: "";
+    display: block;
     position: fixed;
-    background: transparent;
-    z-index: 1001; }
-  .ic-loading:before {
-    width: 32px;
-    height: 32px;
-    top: calc(50% - 16px);
-    left: calc(50% - 16px);
-    border-top: 3px solid black;
-    border-left: 3px solid black;
-    border-right: 1px solid white;
-    border-bottom: 1px solid white;
-    animation: rolling linear .3s infinite reverse; }
-  .ic-loading:after {
-    width: 50px;
-    height: 50px;
-    top: calc(50% - 25px);
-    left: calc(50% - 25px);
-    border-top: 1px solid white;
-    border-left: 1px solid white;
-    border-right: 3px solid black;
-    border-bottom: 3px solid black;
-    animation: rolling linear .3s infinite; }
+    z-index: 10000;
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+    border-width: 0;
+    transition: .2s all ease; }
+  .blocker__ground:before {
+    bottom: 0;
+    left: 0; }
+  .blocker__ground:after {
+    top: 0;
+    right: 0; }
+  .blocker__ground.lock:before {
+    border-top: 50vh solid transparent;
+    border-right: 50vw solid transparent;
+    border-bottom: 50vh solid black;
+    border-left: 50vw solid black; }
+  .blocker__ground.lock:after {
+    border-top: 50vh solid black;
+    border-right: 50vw solid black;
+    border-bottom: 50vh solid transparent;
+    border-left: 50vw solid transparent; }
 
-@keyframes rolling {
+.lock .blocker__loader {
+  display: block; }
+
+.blocker__loader {
+  display: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  z-index: 10001;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%); }
+  .blocker__loader .boxer {
+    height: 160px;
+    width: 400px; }
+    .blocker__loader .boxer__center-sprocket {
+      position: absolute;
+      top: calc(50% - 65px);
+      left: calc(50% - 65px);
+      border: 20px double white;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      animation: roll 0.8s linear infinite; }
+      .blocker__loader .boxer__center-sprocket:before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 130px;
+        height: 130px;
+        top: -30px;
+        left: -30px;
+        border: 10px dashed white;
+        border-radius: 50%; }
+    .blocker__loader .boxer__left-cylinder {
+      position: absolute;
+      top: 40%;
+      width: 160px;
+      height: 20%;
+      animation: bump 0.4s ease-in-out infinite alternate; }
+      .blocker__loader .boxer__left-cylinder .rod {
+        position: absolute;
+        right: 40px;
+        top: calc(50% - 18px);
+        height: 16px;
+        border-top: 10px solid transparent;
+        border-right: 0;
+        border-bottom: 10px solid transparent;
+        border-left: 120px solid white;
+        border-radius: 25%;
+        transform-origin: 100% 50%;
+        animation: bi 0.4s ease-in-out infinite alternate;
+        animation-delay: 0.2s; }
+        .blocker__loader .boxer__left-cylinder .rod:before, .blocker__loader .boxer__left-cylinder .rod:after {
+          content: "";
+          display: inline-block;
+          position: absolute;
+          background: white;
+          border-radius: 50%;
+          box-shadow: 0 0 8px black; }
+        .blocker__loader .boxer__left-cylinder .rod:before {
+          top: calc(50% - 10px);
+          right: -10px;
+          width: 20px;
+          height: 20px; }
+        .blocker__loader .boxer__left-cylinder .rod:after {
+          top: calc(50% - 20px);
+          left: -140px;
+          width: 40px;
+          height: 40px; }
+      .blocker__loader .boxer__left-cylinder .piston {
+        position: absolute;
+        height: 70px;
+        width: 50px;
+        right: 15px;
+        top: calc(50% - 35px);
+        background: white;
+        z-index: -1; }
+        .blocker__loader .boxer__left-cylinder .piston:after {
+          content: "";
+          display: inline-block;
+          position: absolute;
+          top: 2px;
+          right: 4px;
+          width: 3px;
+          height: 66px;
+          border: 1px solid black;
+          border-top-width: 0px;
+          border-bottom-width: 0px; }
+
+@keyframes bump {
+  from {
+    left: 40%; }
+  to {
+    left: 60%; } }
+
+@keyframes reverse-bump {
+  from {
+    left: -10%; }
+  to {
+    left: 10%; } }
+
+@keyframes bi {
+  from {
+    transform: rotate(14deg); }
+  to {
+    transform: rotate(-14deg); } }
+
+@keyframes roll {
   from {
     transform: rotate(0deg); }
   to {

@@ -1,3 +1,4 @@
+const path = require('path')
 
 module.exports = function(grunt) {
   grunt.initConfig({
@@ -44,10 +45,29 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          './dest/index.js': './src/engine/index.js',
+          './dest/index_browserify.js': './src/engine/index.js',
         },
         options: {
           transform: ['babelify']
+        }
+      }
+    },
+    webpack: {
+      config: {
+        entry: './src/engine/index.js',
+        output: {
+          filename: 'index_webpack.js',
+          path: path.resolve(__dirname, 'dest')
+        },
+        mode: 'development',
+        module: {
+          rules: [
+            {
+              test: /\.js$/,
+              exclude: /(node_modules|bower_components)/,
+              use: 'babel-loader'
+            }
+          ]
         }
       }
     },
@@ -71,7 +91,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-webpack');
 
-  grunt.registerTask('default', ['sass', 'copy', 'browserify']);
+  grunt.registerTask('default', ['sass', 'copy', 'webpack']);
 };
 

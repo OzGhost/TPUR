@@ -1,0 +1,179 @@
+$highLayer: 10000
+$bumpSpeed: 0.4s
+$rollSpeed: 0.8s
+$bumpDelay: 0.2s
+
+.blocker__ground
+  display: block
+  font-size: 0
+  height: 0
+  width: 0
+  padding: 0
+  margin: 0
+  border: 0
+  position: fixed
+  top: 0
+  left: 0
+  z-index: -1
+
+  &:before,
+  &:after
+    content: ""
+    display: block
+    position: fixed
+    z-index: $highLayer
+    padding: 0
+    margin: 0
+    font-size: 0
+    border-width: 0
+    transition: .2s all ease
+
+  &:before
+    bottom: 0
+    left: 0
+
+  &:after
+    top: 0
+    right: 0
+
+  &.lock
+    
+    &:before
+      border-top: 50vh solid transparent
+      border-right: 50vw solid transparent
+      border-bottom: 50vh solid black
+      border-left: 50vw solid black
+
+    &:after
+      border-top: 50vh solid black
+      border-right: 50vw solid black
+      border-bottom: 50vh solid transparent
+      border-left: 50vw solid transparent
+
+.lock
+  .blocker__loader
+    display: block
+
+.blocker__loader
+  display: none
+  border: 0
+  margin: 0
+  padding: 0
+  position: fixed
+  z-index: $highLayer + 1
+  top: 50vh
+  left: 50vw
+  transform: translate(-50%, -50%)
+
+  .boxer
+    height: 160px
+    width: 400px
+
+    &__center-sprocket
+      position: absolute
+      top: calc(50% - 65px)
+      left: calc(50% - 65px)
+      border: 20px double white
+      width: 90px
+      height: 90px
+      border-radius: 50%
+      animation: roll $rollSpeed linear infinite
+
+      &:before
+        content: ""
+        display: block
+        position: absolute
+        width: 130px
+        height: 130px
+        top: -30px
+        left: -30px
+        border: 10px dashed white
+        border-radius: 50%
+
+    &__left-cylinder
+      position: absolute
+      top: 40%
+      width: 160px
+      height: 20%
+      animation: bump $bumpSpeed ease-in-out infinite alternate
+
+      .rod
+        position: absolute
+        right: 40px
+        top: calc(50% - 18px)
+        height: 16px
+        border-top: 10px solid transparent
+        border-right: 0
+        border-bottom: 10px solid transparent
+        border-left: 120px solid white
+        border-radius: 25%
+        transform-origin: 100% 50%
+        animation: bi $bumpSpeed ease-in-out infinite alternate
+        animation-delay: $bumpDelay
+
+        &:before,
+        &:after
+          content: ""
+          display: inline-block
+          position: absolute
+          background: white
+          border-radius: 50%
+          box-shadow: 0 0 8px black
+
+        &:before
+          top: calc(50% - 10px)
+          right: -10px
+          width: 20px
+          height: 20px
+
+        &:after
+          top: calc(50% - 20px)
+          left: -140px
+          width: 40px
+          height: 40px
+
+      .piston
+        position: absolute
+        height: 70px
+        width: 50px
+        right: 15px
+        top: calc(50% - 35px)
+        background: white
+        z-index: -1
+
+        &:after
+          content: ""
+          display: inline-block
+          position: absolute
+          top: 2px
+          right: 4px
+          width: 3px
+          height: 66px
+          border: 1px solid black
+          border-top-width: 0px
+          border-bottom-width: 0px
+
+@keyframes bump
+  from
+    left: 40%
+  to
+    left: 60%
+
+@keyframes reverse-bump
+  from
+    left: -10%
+  to
+    left: 10%
+
+@keyframes bi
+  from
+    transform: rotate(14deg)
+  to
+    transform: rotate(-14deg)
+
+@keyframes roll
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+

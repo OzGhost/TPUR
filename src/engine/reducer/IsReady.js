@@ -1,12 +1,24 @@
-import { COMBOBOX_INFO_ARRIVED } from '../action'
+import { COMBOBOX_INFO_ARRIVED,
+        RECEIVE_CALCULATION_RESULT,
+        CLEAN_RESULT  } from '../action'
 import StaticStore from '../common/StaticStore'
 
 const IsReady = (state = false, action) => {
-  if (action.type === COMBOBOX_INFO_ARRIVED) {
-    StaticStore.initStore(action.payload)
-    return true
+  switch(action.type) {
+
+    case COMBOBOX_INFO_ARRIVED:
+      StaticStore.initStore(action.payload)
+      return true
+
+    case RECEIVE_CALCULATION_RESULT:
+      return true
+
+    case CLEAN_RESULT:
+      return false
+
+    default:
+      return state
   }
-  return state
 }
 
 export default IsReady

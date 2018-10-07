@@ -9,6 +9,7 @@ export const UPDATE_USER_INPUT = 'User input updated'
 export const AUTO_FILL_INPUT = 'Auto fill user input'
 export const COMBOBOX_INFO_ARRIVED = 'Combo box info is arrived'
 export const RECEIVE_CALCULATION_RESULT = 'Receive calcuation result'
+export const CLEAN_RESULT = 'Result table cleaning'
 
 export const updateUserInput = (key, value) =>
   update(USER_INPUT_SIGNAL, key, value)
@@ -41,6 +42,7 @@ export const autoFill = () => ({
 })
 
 export const launch = () => (dispatch, getState) => {
+  dispatch(cleanResult())
   const payload = GlobalConfig.get('convertPayload')(getState().userInput)
 
   fetch(
@@ -61,4 +63,8 @@ export const launch = () => (dispatch, getState) => {
 const receiveCalculationResult = result => ({
   type: RECEIVE_CALCULATION_RESULT,
   payload: result
+})
+
+const cleanResult = () => ({
+  type: CLEAN_RESULT
 })
