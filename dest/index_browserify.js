@@ -35472,7 +35472,9 @@ var loadComboboxInput = exports.loadComboboxInput = function loadComboboxInput()
     fetch(comboboxInfoURI).then(function (res) {
       return res.json();
     }).then(function (json) {
-      return dispatch(comboboxInfoArrive(json));
+      setTimeout(function () {
+        dispatch(comboboxInfoArrive(json));
+      }, 3000);
     });
   };
 };
@@ -35504,7 +35506,9 @@ var launch = exports.launch = function launch() {
       return rs.json();
     }).then(function (result) {
       var convertedResult = _GlobalConfig2.default.get('convertResult')(result);
-      dispatch(receiveCalculationResult(convertedResult));
+      setTimeout(function () {
+        dispatch(receiveCalculationResult(convertedResult));
+      }, 3000);
     });
   };
 };
@@ -35589,7 +35593,7 @@ var StaticStore = function StaticStore() {
 
   _classCallCheck(this, StaticStore);
 
-  this.store = undefined;
+  this.store = {};
 
   this.getStore = function () {
     return _this.store;
@@ -35633,12 +35637,13 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Blocker = function Blocker() {
-  var lock = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+var Blocker = function Blocker(_ref) {
+  var lock = _ref.lock;
 
+  var groundClass = "blocker__ground" + (lock ? " lock" : "");
   return _react2.default.createElement(
     "div",
-    { className: "blocker__ground lock" },
+    { className: groundClass },
     _react2.default.createElement(
       "div",
       { className: "blocker__loader" },
@@ -35651,7 +35656,12 @@ var Blocker = function Blocker() {
           _react2.default.createElement("div", { className: "rod" }),
           _react2.default.createElement("div", { className: "piston" })
         ),
-        _react2.default.createElement("div", { className: "boxer__right-cylinder" }),
+        _react2.default.createElement(
+          "div",
+          { className: "boxer__right-cylinder" },
+          _react2.default.createElement("div", { className: "rod" }),
+          _react2.default.createElement("div", { className: "piston" })
+        ),
         _react2.default.createElement("div", { className: "boxer__center-sprocket" })
       )
     )
@@ -35953,8 +35963,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var InputCollector = function InputCollector(props) {
   var store = _StaticStore2.default.getStore();
-
-  if (!store) return _react2.default.createElement('span', null);
 
   var buildListener = function buildListener(fieldName) {
     return function (value) {
@@ -36263,6 +36271,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var orderedKeys = ["EQUITY_CAPITAL", "RISK", "REFINANCING", "IRS", "HEDGE_COSTS", "ETP_FEASIBILITY", "FORWARD", "DUTY_COSTS", "MARKET_BALANCING", "FOREIGN_SURCHARGE", "PRODUCTION", "DISTRIBUTION_COSTS", "MINIMAL_OFFER", "SURCHARGE", "RECOMMENDED_INTEREST_RATE", "MORTGAGE_SPLITTING_1", "MORTGAGE_SPLITTING_2", "MORTGAGE_SPLITTING_3", "MORTGAGE_SPLITTING_4", "VOLUME_DISCOUNT", "FLOOR", "COMPETENCE_LEVEL_1", "COMPETENCE_LEVEL_2", "COMPETENCE_LEVEL_3", "COMPETENCE_LEVEL_4", "COMPETENCE_LEVEL_5", "COMPETENCE_LEVEL_6", "COMPETENCE_LEVEL_7", "COMPETENCE_LEVEL_8", "RAW_RECOMMENDED_INTEREST_RATE"];
+
 var ResultTable = function (_React$Component) {
   _inherits(ResultTable, _React$Component);
 
@@ -36280,9 +36290,7 @@ var ResultTable = function (_React$Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ResultTable.__proto__ || Object.getPrototypeOf(ResultTable)).call.apply(_ref, [this].concat(args))), _this), _this.convertResultToRows = function (results) {
       if (!Array.isArray(results) || results.length < 1) return [];
 
-      var keys = Object.keys(results[0]['ruleResults']);
-      keys.sort();
-      return keys.map(function (key) {
+      return orderedKeys.map(function (key) {
         var row = {};
         row.key = key;
         row.label = key;
@@ -36302,8 +36310,6 @@ var ResultTable = function (_React$Component) {
       });
       return header;
     }, _this.render = function () {
-      if (!_this.props.calculationResults) return _react2.default.createElement('span', null);
-
       var rows = _this.convertResultToRows(_this.props.calculationResults);
       var thead = _this.extractColumnHeader(_this.props.calculationResults);
       return _react2.default.createElement(
@@ -36463,10 +36469,15 @@ var App = function (_React$Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
       _this.props.dispatch((0, _action.loadComboboxInput)());
     }, _this.render = function () {
+      if (!_this.props.isReady) return _react2.default.createElement(
+        'div',
+        { className: 'TPUR-app' },
+        _react2.default.createElement(_Blocker2.default, { lock: true })
+      );
       return _react2.default.createElement(
         'div',
         { className: 'TPUR-app' },
-        _react2.default.createElement(_Blocker2.default, { lock: !_this.props.isReady }),
+        _react2.default.createElement(_Blocker2.default, { lock: false }),
         _react2.default.createElement(_InputCollector2.default, null),
         _react2.default.createElement(_ResultTable2.default, null)
       );

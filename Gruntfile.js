@@ -97,6 +97,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-webpack');
 
-  grunt.registerTask('default', ['sass', 'copy', 'webpack']);
+  grunt.registerTask('default', ['sass', 'copy', 'browserify']);
 };
 

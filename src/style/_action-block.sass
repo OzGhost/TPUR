@@ -1,7 +1,7 @@
 $base-padding: 16px
 
 .action-block
-  width: 90%
+  width: 40%
   display: block
   margin: 36px auto
 
@@ -9,21 +9,23 @@ $base-padding: 16px
     width: 50%
     padding: $base-padding
     margin: 0
-    background: white
+    background: #7edeff
+    color: white
     border: none
+    white-space: nowrap
     box-sizing: border-box
-    box-shadow: 0 0 8px grey
-    transition: .3s all ease
+    box-shadow: 0 0 2px grey
+    overflow: hidden
+    transition: .1s all ease
 
   &:hover
     
     button
-      width: 45%
-      padding: $base-padding - 8px
-      margin: 8px 0
+      width: 0
+      padding: 0
 
       &:hover
-        width: 55%
-        padding: $base-padding + 4px
-        box-shadow: 0 0 12px black
+        width: 100%
+        padding: $base-padding
+        box-shadow: 0 0 6px black
 

@@ -31,24 +31,27 @@ $bumpDelay: 0.2s
   &:before
     bottom: 0
     left: 0
+    border-top: 0vh solid transparent
+    border-right: 0vw solid transparent
+    border-bottom: 0vh solid black
+    border-left: 0vw solid black
 
   &:after
     top: 0
     right: 0
+    border-top: 0vh solid black
+    border-right: 0vw solid black
+    border-bottom: 0vh solid transparent
+    border-left: 0vw solid transparent
 
   &.lock
     
-    &:before
-      border-top: 50vh solid transparent
-      border-right: 50vw solid transparent
-      border-bottom: 50vh solid black
-      border-left: 50vw solid black
-
+    &:before,
     &:after
-      border-top: 50vh solid black
-      border-right: 50vw solid black
-      border-bottom: 50vh solid transparent
-      border-left: 50vw solid transparent
+      border-top-width: 50vh
+      border-right-width: 50vw
+      border-bottom-width: 50vh
+      border-left-width: 50vw
 
 .lock
   .blocker__loader
@@ -153,17 +156,80 @@ $bumpDelay: 0.2s
           border-top-width: 0px
           border-bottom-width: 0px
 
+    &__right-cylinder
+      position: absolute
+      top: 40%
+      width: 160px
+      height: 20%
+      animation: reverse_bump $bumpSpeed ease-in-out infinite alternate
+
+      .rod
+        position: absolute
+        left: 40px
+        top: calc(50% - 18px)
+        height: 16px
+        border-top: 10px solid transparent
+        border-left: 0
+        border-bottom: 10px solid transparent
+        border-right: 120px solid white
+        border-radius: 25%
+        transform-origin: 0 50%
+        animation: bi $bumpSpeed ease-in-out infinite alternate
+        animation-delay: $bumpDelay
+
+        &:before,
+        &:after
+          content: ""
+          display: inline-block
+          position: absolute
+          background: white
+          border-radius: 50%
+          box-shadow: 0 0 8px black
+
+        &:before
+          top: calc(50% - 10px)
+          left: -10px
+          width: 20px
+          height: 20px
+
+        &:after
+          top: calc(50% - 20px)
+          right: -140px
+          width: 40px
+          height: 40px
+
+      .piston
+        position: absolute
+        height: 70px
+        width: 50px
+        left: 15px
+        top: calc(50% - 35px)
+        background: white
+        z-index: -1
+
+        &:after
+          content: ""
+          display: inline-block
+          position: absolute
+          top: 2px
+          left: 4px
+          width: 3px
+          height: 66px
+          border: 1px solid black
+          border-top-width: 0px
+          border-bottom-width: 0px
+
 @keyframes bump
   from
     left: 40%
   to
     left: 60%
 
-@keyframes reverse-bump
+@keyframes reverse_bump
   from
-    left: -10%
+    left: calc(60% - 160px)
   to
-    left: 10%
+    left: calc(40% - 160px)
 
 @keyframes bi
   from

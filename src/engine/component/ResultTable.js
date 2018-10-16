@@ -2,6 +2,39 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import TableRow from './TableRow'
 
+const orderedKeys = [
+  "EQUITY_CAPITAL",
+  "RISK",
+  "REFINANCING",
+  "IRS",
+  "HEDGE_COSTS",
+  "ETP_FEASIBILITY",
+  "FORWARD",
+  "DUTY_COSTS",
+  "MARKET_BALANCING",
+  "FOREIGN_SURCHARGE",
+  "PRODUCTION",
+  "DISTRIBUTION_COSTS",
+  "MINIMAL_OFFER",
+  "SURCHARGE",
+  "RECOMMENDED_INTEREST_RATE",
+  "MORTGAGE_SPLITTING_1",
+  "MORTGAGE_SPLITTING_2",
+  "MORTGAGE_SPLITTING_3",
+  "MORTGAGE_SPLITTING_4",
+  "VOLUME_DISCOUNT",
+  "FLOOR",
+  "COMPETENCE_LEVEL_1",
+  "COMPETENCE_LEVEL_2",
+  "COMPETENCE_LEVEL_3",
+  "COMPETENCE_LEVEL_4",
+  "COMPETENCE_LEVEL_5",
+  "COMPETENCE_LEVEL_6",
+  "COMPETENCE_LEVEL_7",
+  "COMPETENCE_LEVEL_8",
+  "RAW_RECOMMENDED_INTEREST_RATE"
+]
+
 class ResultTable extends React.Component {
 
   static propTypes = {
@@ -15,9 +48,7 @@ class ResultTable extends React.Component {
     if ( ! Array.isArray(results) || results.length < 1)
       return []
 
-    var keys = Object.keys(results[0]['ruleResults'])
-    keys.sort()
-    return keys.map(key => {
+    return orderedKeys.map(key => {
       var row = {}
       row.key = key
       row.label = key

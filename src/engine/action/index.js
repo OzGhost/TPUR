@@ -26,7 +26,11 @@ const update = (signal, key, value) => (
 export const loadComboboxInput = () => dispatch => {
   fetch(comboboxInfoURI)
     .then(res => res.json())
-    .then(json => dispatch(comboboxInfoArrive(json)))
+    .then(json => {
+      setTimeout(()=>{
+        dispatch(comboboxInfoArrive(json))
+      }, 3000)
+    })
 }
 
 const comboboxInfoArrive = data => (
@@ -56,7 +60,9 @@ export const launch = () => (dispatch, getState) => {
     .then(rs => rs.json())
     .then(result => {
       const convertedResult = GlobalConfig.get('convertResult')(result)
-      dispatch( receiveCalculationResult(convertedResult) )
+      setTimeout(()=>{
+        dispatch( receiveCalculationResult(convertedResult) )
+      }, 3000)
     })
 }
 
