@@ -35472,9 +35472,7 @@ var loadComboboxInput = exports.loadComboboxInput = function loadComboboxInput()
     fetch(comboboxInfoURI).then(function (res) {
       return res.json();
     }).then(function (json) {
-      setTimeout(function () {
-        dispatch(comboboxInfoArrive(json));
-      }, 3000);
+      dispatch(comboboxInfoArrive(json));
     });
   };
 };
@@ -35506,9 +35504,7 @@ var launch = exports.launch = function launch() {
       return rs.json();
     }).then(function (result) {
       var convertedResult = _GlobalConfig2.default.get('convertResult')(result);
-      setTimeout(function () {
-        dispatch(receiveCalculationResult(convertedResult));
-      }, 3000);
+      dispatch(receiveCalculationResult(convertedResult));
     });
   };
 };
@@ -35700,44 +35696,94 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Dropdown = function (_InputBlock) {
   _inherits(Dropdown, _InputBlock);
 
-  function Dropdown() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function Dropdown(props) {
     _classCallCheck(this, Dropdown);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (Dropdown.__proto__ || Object.getPrototypeOf(Dropdown)).call(this, props));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Dropdown.__proto__ || Object.getPrototypeOf(Dropdown)).call.apply(_ref, [this].concat(args))), _this), _this.valueExtract = function (event) {
-      var val = event.target.value;
-      if (val === '...') return undefined;
-      return val;
-    }, _this.buildInputElement = function (changeListener) {
+    _this.toggle = function () {
+      var current = _this.state.isOpen;
+      _this.setState({
+        isOpen: !current
+      });
+    };
+
+    _this.close = function () {
+      _this.setState({
+        isOpen: false
+      });
+    };
+
+    _this.getScreenValue = function () {
+      var selected = _this.props.items.filter(function (e) {
+        return e.code === _this.props.value;
+      });
+      if (selected.length < 1) return '...';else return selected[0].name;
+    };
+
+    _this.valueExtract = function (e) {
+      return e;
+    };
+
+    _this.buildInputElement = function (changeListener) {
       var _this$props = _this.props,
           value = _this$props.value,
           items = _this$props.items;
+      var isOpen = _this.state.isOpen;
 
+
+      var sliderSC = 'dropdown__slider' + (isOpen ? ' open' : '');
+
+      var callback = function callback(val) {
+        return function () {
+          _this.toggle();
+          changeListener(val);
+        };
+      };
 
       return _react2.default.createElement(
-        'select',
-        { value: value, onChange: changeListener },
+        'div',
+        { className: 'dropdown' },
         _react2.default.createElement(
-          'option',
-          null,
-          '...'
+          'p',
+          { className: 'dropdown__screen', onClick: _this.toggle },
+          _this.getScreenValue()
         ),
-        items.map(function (i) {
-          return _react2.default.createElement(
-            'option',
-            { key: i.code, value: i.code },
-            i.name
-          );
-        })
+        _react2.default.createElement(
+          'div',
+          { className: sliderSC },
+          _react2.default.createElement(
+            'ul',
+            { className: 'dropdown__items' },
+            _react2.default.createElement(
+              'li',
+              { key: "undefined",
+                onClick: callback(undefined)
+              },
+              '...'
+            ),
+            items.map(function (i) {
+              return _react2.default.createElement(
+                'li',
+                {
+                  key: i.code,
+                  title: i.name,
+                  onClick: callback(i.code)
+                },
+                i.name
+              );
+            })
+          )
+        )
       );
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    _this.state = {};
+
+    _this.toggle = _this.toggle.bind(_this);
+    _this.close = _this.close.bind(_this);
+    _this.getScreenValue = _this.getScreenValue.bind(_this);
+    return _this;
   }
 
   /** @Override */
@@ -35754,7 +35800,8 @@ Dropdown.propTypes = {
   items: _propTypes2.default.arrayOf(_propTypes2.default.shape({
     name: _propTypes2.default.string,
     code: _propTypes2.default.any
-  })).isRequired };
+  })).isRequired
+};
 exports.default = Dropdown;
 
 },{"./InputBlock":65,"prop-types":21,"react":46}],65:[function(require,module,exports){
@@ -35799,8 +35846,8 @@ var InputBlock = function (_React$Component) {
           label = _this$props.label,
           changeListener = _this$props.changeListener;
 
-      var callback = function callback(event) {
-        if ('function' === typeof changeListener) changeListener(_this.valueExtract(event));
+      var callback = function callback(e) {
+        if ('function' === typeof changeListener) changeListener(_this.valueExtract(e));
       };
       return _this.toDOM(label, callback);
     }, _this.valueExtract = function (event) {
@@ -36442,8 +36489,6 @@ var _StaticStore = require('../common/StaticStore');
 
 var _StaticStore2 = _interopRequireDefault(_StaticStore);
 
-var _action = require('../action');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36467,7 +36512,7 @@ var App = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
-      _this.props.dispatch((0, _action.loadComboboxInput)());
+      console.warn('cout << app mounted!');
     }, _this.render = function () {
       if (!_this.props.isReady) return _react2.default.createElement(
         'div',
@@ -36491,7 +36536,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return { isReady: state.isReady };
 })(App);
 
-},{"../action":58,"../common/StaticStore":61,"../component/Blocker":63,"../container/InputCollector":74,"../container/ResultTable":75,"react":46,"react-redux":38}],74:[function(require,module,exports){
+},{"../common/StaticStore":61,"../component/Blocker":63,"../container/InputCollector":74,"../container/ResultTable":75,"react":46,"react-redux":38}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36566,9 +36611,16 @@ var _reducer = require('./reducer');
 
 var _reducer2 = _interopRequireDefault(_reducer);
 
+var _action = require('./action');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger.createLogger)()));
+
+window.onload = function () {
+  console.warn('cout << onload event was fired!');
+  store.dispatch((0, _action.loadComboboxInput)());
+};
 
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
@@ -36576,7 +36628,7 @@ var store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddlewar
   _react2.default.createElement(_App2.default, null)
 ), document.getElementById('frame'));
 
-},{"./container/App":73,"./reducer":80,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],77:[function(require,module,exports){
+},{"./action":58,"./container/App":73,"./reducer":80,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],77:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

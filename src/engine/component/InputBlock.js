@@ -10,9 +10,9 @@ class InputBlock extends React.Component {
 
   render = () => {
     const { label, changeListener } = this.props
-    const callback = (event) => {
+    const callback = e => {
       if ('function' === typeof(changeListener))
-        changeListener(this.valueExtract(event))
+        changeListener(this.valueExtract(e))
     }
     return this.toDOM(label, callback)
   }

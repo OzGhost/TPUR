@@ -27,9 +27,7 @@ export const loadComboboxInput = () => dispatch => {
   fetch(comboboxInfoURI)
     .then(res => res.json())
     .then(json => {
-      setTimeout(()=>{
-        dispatch(comboboxInfoArrive(json))
-      }, 3000)
+      dispatch(comboboxInfoArrive(json))
     })
 }
 
@@ -60,9 +58,7 @@ export const launch = () => (dispatch, getState) => {
     .then(rs => rs.json())
     .then(result => {
       const convertedResult = GlobalConfig.get('convertResult')(result)
-      setTimeout(()=>{
-        dispatch( receiveCalculationResult(convertedResult) )
-      }, 3000)
+      dispatch( receiveCalculationResult(convertedResult) )
     })
 }
 

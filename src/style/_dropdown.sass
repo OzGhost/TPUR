@@ -1,0 +1,66 @@
+
+.dropdown
+  display: block
+  border: 1px solid lightgrey
+  position: relative
+
+  &__screen
+    padding: 8px 12px
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  &__slider
+    width: calc(100% + 32px)
+    max-height: 0
+    overflow: hidden
+    margin-left: -30px
+    position: absolute
+    z-index: 100
+    top: 33px
+    left: -1px
+    transition: .2s max-height ease
+
+    &:before
+      content: ""
+      display: inline-block
+      width: calc(100% - 30px)
+      position: absolute
+      bottom: 0
+      left: 30px
+      height: 1px
+      box-shadow: 0 0 3px grey
+
+    &:after
+      content: ""
+      display: inline-block
+      width: 1px
+      height: 100%
+      position: absolute
+      right: 0
+      top: 0
+      box-shadow: 0 0 3px grey
+
+    &.open
+      max-height: 200px
+
+  &__items
+    max-height: 200px
+    overflow-y: auto
+
+    li
+      border-left: 1px dashed grey
+      background-color: white
+      padding: 8px 12px
+      margin-left: 30px
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      cursor: pointer
+      transition: .2s all ease
+
+      &:hover
+        margin-left: 0
+        background-color: #7edeff
+        color: white
+        padding: 12px 16px

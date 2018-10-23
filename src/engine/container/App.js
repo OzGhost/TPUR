@@ -5,12 +5,11 @@ import Blocker from '../component/Blocker'
 import InputCollector from '../container/InputCollector'
 import ResultTable from '../container/ResultTable'
 import StaticStore from '../common/StaticStore'
-import { loadComboboxInput } from '../action'
 
 class App extends React.Component {
 
   componentDidMount = () => {
-    this.props.dispatch(loadComboboxInput())
+    console.warn('cout << app mounted!');
   }
 
   render = () => {
