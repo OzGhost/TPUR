@@ -27,7 +27,9 @@ export const loadComboboxInput = () => dispatch => {
   fetch(comboboxInfoURI)
     .then(res => res.json())
     .then(json => {
-      dispatch(comboboxInfoArrive(json))
+      var ratingWithoutZero = json['rating'].filter(e => e.name !== '0')
+      var newOne = Object.assign({}, json, {rating: ratingWithoutZero})
+      dispatch(comboboxInfoArrive(newOne))
     })
 }
 

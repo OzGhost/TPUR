@@ -47,7 +47,7 @@ const buildAutoInputState = () => {
     result[fieldName] = getFirstCode(fieldName)
   })
 
-  result[PAYOUT_DATE_FIELD_NAME] = moment().add(10, 'days')
+  result[PAYOUT_DATE_FIELD_NAME] = moment("2000-11-11");
   result[ETP_FIELD_NAME] = true
   result[VIOLATION_FIELD_NAME] = true
   result[FOREIGN_SURCHARGE_FIELD_NAME] = true

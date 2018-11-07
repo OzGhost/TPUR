@@ -1,11 +1,24 @@
+$dark-side: #2c3e50
+$bright-side: #16a085
+$header: white
+$text: white
+
 .result-table
   border-collapse: collapse
   width: 100%
   margin: 40px 0
+  color: $text
+
+  tr
+    &:nth-child(odd)
+      background: $dark-side
+
+    &:nth-child(even)
+      background: $bright-side
 
   td
-    border: 1px solid #dedede
-    padding: 4px 6px
+    border: 1px solid $dark-side
+    padding: 8px 12px
     text-overflow: ellipsis
     white-space: nowrap
     overflow: hidden
@@ -13,13 +26,15 @@
   .row__label
     font-weight: bold
     text-align: left
+    max-width: 180px
 
   .row__cell
-    max-width: 80px
     text-align: right
+    max-width: 86px
 
   .row__header
     font-weight: bold
-    background: #d3d3d3
+    font-size: 22px
     text-align: center
+    color: $header
 
