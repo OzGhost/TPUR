@@ -35472,7 +35472,11 @@ var loadComboboxInput = exports.loadComboboxInput = function loadComboboxInput()
     fetch(comboboxInfoURI).then(function (res) {
       return res.json();
     }).then(function (json) {
-      dispatch(comboboxInfoArrive(json));
+      var ratingWithoutZero = json['rating'].filter(function (e) {
+        return e.name !== '0';
+      });
+      var newOne = Object.assign({}, json, { rating: ratingWithoutZero });
+      dispatch(comboboxInfoArrive(newOne));
     });
   };
 };
@@ -35732,7 +35736,7 @@ var Dropdown = function (_InputBlock) {
       var isOpen = _this.state.isOpen;
 
 
-      var sliderSC = 'dropdown__slider' + (isOpen ? ' open' : '');
+      var styleClass = 'dropdown' + (isOpen ? ' open' : '');
 
       var callback = function callback(val) {
         return function () {
@@ -35741,17 +35745,19 @@ var Dropdown = function (_InputBlock) {
         };
       };
 
+      var screenVal = _this.getScreenValue();
+
       return _react2.default.createElement(
         'div',
-        { className: 'dropdown' },
+        { className: styleClass },
         _react2.default.createElement(
           'p',
-          { className: 'dropdown__screen', onClick: _this.toggle },
-          _this.getScreenValue()
+          { className: 'dropdown__screen', onClick: _this.toggle, title: screenVal },
+          screenVal
         ),
         _react2.default.createElement(
           'div',
-          { className: sliderSC },
+          { className: 'dropdown__slider' },
           _react2.default.createElement(
             'ul',
             { className: 'dropdown__items' },
@@ -36152,13 +36158,18 @@ var InputDate = function (_InputBlock) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InputDate.__proto__ || Object.getPrototypeOf(InputDate)).call.apply(_ref, [this].concat(args))), _this), _this.buildInputElement = function (changeListener) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InputDate.__proto__ || Object.getPrototypeOf(InputDate)).call.apply(_ref, [this].concat(args))), _this), _this.valueExtract = function (date) {
+      return date;
+    }, _this.buildInputElement = function (changeListener) {
       return _react2.default.createElement(_reactDatepicker2.default, {
         selected: _this.props.value,
         onChange: changeListener,
         dateFormat: 'DD.MM.YYYY' });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
+
+  /** @Override */
+
 
   /** @Override */
 
@@ -36754,7 +36765,7 @@ var buildAutoInputState = function buildAutoInputState() {
     result[fieldName] = getFirstCode(fieldName);
   });
 
-  result[_Constant.PAYOUT_DATE_FIELD_NAME] = (0, _moment2.default)().add(10, 'days');
+  result[_Constant.PAYOUT_DATE_FIELD_NAME] = (0, _moment2.default)("2000-11-11");
   result[_Constant.ETP_FIELD_NAME] = true;
   result[_Constant.VIOLATION_FIELD_NAME] = true;
   result[_Constant.FOREIGN_SURCHARGE_FIELD_NAME] = true;

@@ -26,12 +26,36 @@
         "code": "FIXED_RATE_MORTGAGE"
       },
       {
+        "name": "Fixed rate mortgage forward promotion",
+        "code": "FIXED_RATE_MORTGAGE_FWRD_PROM"
+      },
+      {
         "name": "Family mortgage fixed",
         "code": "FAMILY_MORTGAGE"
       },
       {
+        "name": "Family mortgage fixed forward promotion",
+        "code": "FAMILY_MORTGAGE_FWRD_PROM"
+      },
+      {
         "name": "Flex mortgage",
         "code": "FLEX_MORTGAGE"
+      },
+      {
+        "name": "1. Mortgage variable",
+        "code": "1_MORTGAGE_VARIABLE"
+      },
+      {
+        "name": "2. Mortgage variable",
+        "code": "2_MORTGAGE_VARIABLE"
+      },
+      {
+        "name": "1. Family mortgage variable",
+        "code": "1_FAMILY_MORTGAGE_VARIABLE"
+      },
+      {
+        "name": "2. Family mortgage variable",
+        "code": "2_FAMILY_MORTGAGE_VARIABLE"
       }
     ],
     "business": [
@@ -83,6 +107,10 @@
       }
     ],
     "rating": [
+      {
+        "name": "0",
+        "code": "ZERO"
+      },
       {
         "name": "1",
         "code": "ONE"
@@ -142,7 +170,7 @@
         "currentTranche": {
           "productCode": "FIXED_RATE_MORTGAGE",
           "amountPiece": 40000,
-          "payOutDate": "10.10.2018",
+          "payOutDate": "11.11.2000",
           "period": 2
         }
       },

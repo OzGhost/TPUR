@@ -12,6 +12,11 @@ class InputDate extends InputBlock {
   }
 
   /** @Override */
+  valueExtract = date => {
+    return date
+  }
+
+  /** @Override */
   buildInputElement = changeListener => {
     return (
       <DatePicker

@@ -53,19 +53,21 @@ class Dropdown extends InputBlock {
     const { value, items } = this.props
     const { isOpen } = this.state
 
-    const sliderSC = 'dropdown__slider' + (isOpen ? ' open' : '')
+    const styleClass = 'dropdown' + (isOpen ? ' open' : '')
 
     const callback = val => () => {
       this.toggle()
       changeListener(val)
     }
 
+    const screenVal = this.getScreenValue()
+
     return (
-      <div className="dropdown">
-        <p className="dropdown__screen" onClick={this.toggle}>
-          { this.getScreenValue() }
+      <div className={styleClass}>
+        <p className="dropdown__screen" onClick={this.toggle} title={screenVal}>
+          {screenVal}
         </p>
-        <div className={sliderSC}>
+        <div className="dropdown__slider">
           <ul className="dropdown__items">
             <li key={"undefined"}
                 onClick={callback(undefined)}
