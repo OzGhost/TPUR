@@ -6,6 +6,7 @@ import InputNumber from './InputNumber'
 import InputDate from './InputDate'
 import Dropdown from './Dropdown'
 import InputBool from './InputBool'
+import AdditionalSecurities from './AdditionalSecurities'
 import StaticStore from '../common/StaticStore'
 
 import { updateUserInput, autoFill, launch } from '../action'
@@ -82,8 +83,12 @@ const InputCollector = (props) => {
 
       <br/>
 
+      <AdditionalSecurities additionalSecurities={props.additionalSecurities}/>
+
       <div className="action-block">
-        <button onClick={()=>props.dispatch(autoFill())}>Fill-in sample data</button>
+        <button onClick={()=>props.dispatch(autoFill())}>
+          Fill-in sample data
+        </button>
         <button onClick={()=>props.dispatch(launch())}>Calculate</button>
       </div>
     </div>
@@ -108,6 +113,7 @@ InputCollector.propTypes = {
   ,mortgageAmount: PropTypes.number
   ,rating: PropTypes.string
   ,ratingAgency: PropTypes.string
+  ,additionalSecurities: PropTypes.array
 }
 
 export default InputCollector

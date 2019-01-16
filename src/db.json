@@ -141,6 +141,16 @@
         "name": "RAND",
         "code": "RAND"
       }
+    ],
+    "additionalSecurityTypes": [
+      {
+        "name": "Own bank",
+        "code": "ast_01"
+      },
+      {
+        "name": "No you",
+        "code": "ast_02"
+      }
     ]
   },
   "calculator": {

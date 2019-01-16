@@ -309,7 +309,6 @@ br {
     border: none;
     white-space: nowrap;
     box-sizing: border-box;
-    box-shadow: 0 0 2px grey;
     overflow: hidden;
     transition: .1s width ease; }
   .action-block:hover button {
@@ -318,7 +317,7 @@ br {
     .action-block:hover button:hover {
       width: 70%;
       opacity: 1;
-      box-shadow: 0 0 6px black; }
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 12px 0 rgba(0, 0, 0, 0.19); }
 
 .dropdown {
   display: block;
@@ -354,29 +353,10 @@ br {
     top: 33px;
     left: -1px;
     transition: .2s max-height ease-out; }
-    .dropdown__slider:before {
-      content: "";
-      display: inline-block;
-      width: calc(100% - 30px);
-      position: absolute;
-      bottom: 0;
-      left: 30px;
-      height: 1px;
-      box-shadow: 0 0 3px grey; }
-    .dropdown__slider:after {
-      content: "";
-      display: inline-block;
-      width: 1px;
-      height: 100%;
-      position: absolute;
-      right: 0;
-      top: 0;
-      box-shadow: 0 0 3px grey; }
   .dropdown__items {
     max-height: 200px;
     overflow-y: auto; }
     .dropdown__items li {
-      border-left: 1px dashed grey;
       background-color: white;
       padding: 8px 12px;
       margin-left: 30px;
@@ -385,16 +365,49 @@ br {
       text-overflow: ellipsis;
       cursor: pointer;
       transition: .2s all ease;
-      box-sizing: border-box; }
+      box-sizing: border-box;
+      position: relative; }
+      .dropdown__items li:after {
+        content: "";
+        height: 12px;
+        width: 0;
+        border-left: 1px dashed lightgrey;
+        position: absolute;
+        bottom: 0;
+        left: 0; }
+      .dropdown__items li:before {
+        content: "";
+        height: 0;
+        width: 100%;
+        border-bottom: 1px dashed lightgrey;
+        position: absolute;
+        bottom: 0;
+        left: 0; }
       .dropdown__items li:hover {
+        border-width: 0;
         margin-left: 0;
         background-color: #7edeff;
         color: white;
-        padding: 12px 16px;
-        box-shadow: 0 0 4px grey; }
+        padding: 12px 16px; }
 
 .open .dropdown__slider {
   max-height: 200px; }
 
 .open .dropdown__screen:after {
   transform: rotate(45deg); }
+
+.additional-securities-frame {
+  width: 750px;
+  margin: auto; }
+
+.additional-security-input:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 0;
+  margin: 0;
+  padding: 0; }
+
+.additional-security-input .input-block {
+  padding: 6px 8px;
+  width: 45%; }
