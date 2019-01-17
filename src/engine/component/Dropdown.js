@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import InputBlock from './InputBlock'
+import IncreasementIndexer from '../common/IncreasementIndexer'
+import GlobalEvent from '../common/GlobalEvent'
 
 class Dropdown extends InputBlock {
 
@@ -15,11 +17,25 @@ class Dropdown extends InputBlock {
   constructor(props){
     super(props)
     
-    this.state = {}
+    this.state = {
+      index: IncreasementIndexer.next()
+    }
 
     this.toggle = this.toggle.bind(this)
     this.close = this.close.bind(this)
     this.getScreenValue = this.getScreenValue.bind(this)
+  }
+
+  componentDidMount = () => {
+    let index = this.state.index;
+    console.error("cout << drop down: "+index+" did mount");
+    GlobalEvent.addEvent("click", function(originalEvent){
+      console.error("cout << try to control: ", index);
+    });
+  }
+
+  componentWillUnmount = () => {
+    console.log("cout << component will unmount");
   }
 
   toggle = () => {

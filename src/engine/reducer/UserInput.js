@@ -29,7 +29,19 @@ const defaultViewModal = {
   marketValue: 0,
   mortgageAmount: 0,
   rating: '',
-  ratingAgency: ''
+  ratingAgency: '',
+  additionalSecurities: [
+    {
+      id: 1,
+      type: "ast_01",
+      value: 1000
+    },
+    {
+      id: 2,
+      type: "ast_02",
+      value: 4000
+    }
+  ]
 }
 
 const buildAutoInputState = () => {

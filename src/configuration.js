@@ -367,4 +367,14 @@ window.TPUR.config = {
         }
       }
   }
+  , 'hiddenAttributes': [
+      'COMPETENCE_LEVEL_1',
+      'COMPETENCE_LEVEL_2',
+      'COMPETENCE_LEVEL_3',
+      'COMPETENCE_LEVEL_4',
+      'COMPETENCE_LEVEL_5',
+      'COMPETENCE_LEVEL_6',
+      'COMPETENCE_LEVEL_7',
+      'COMPETENCE_LEVEL_8'
+  ]
 }

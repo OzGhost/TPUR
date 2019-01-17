@@ -35588,6 +35588,74 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var GlobalEvent = function GlobalEvent() {
+  var _this = this;
+
+  _classCallCheck(this, GlobalEvent);
+
+  this.events = {
+    "click": []
+  };
+
+  this.addEvent = function (type, listener) {
+    if (typeof type !== "string") {
+      console.warn("Event type must be a string! but got: " + (typeof type === "undefined" ? "undefined" : _typeof(type)));
+      return;
+    }
+    if (typeof listener !== "function") {
+      console.log("Listener must be a function! but got: " + (typeof listener === "undefined" ? "undefined" : _typeof(listener)));
+      return;
+    }
+    if (type !== "click") {
+      console.log("Event type [" + type + "] do not supported yet!");
+    }
+    _this.events[type][_this.events[type].length] = listener;
+  };
+
+  var events = this.events;
+  document.body.addEventListener("click", function (originalEvent) {
+    events["click"].forEach(function (listener) {
+      listener(originalEvent);
+    });
+  });
+};
+
+exports.default = new GlobalEvent();
+
+},{}],62:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var IncreasementIndexer = function IncreasementIndexer() {
+  var _this = this;
+
+  _classCallCheck(this, IncreasementIndexer);
+
+  this.index = 0;
+
+  this.next = function () {
+    return ++_this.index;
+  };
+};
+
+exports.default = new IncreasementIndexer();
+
+},{}],63:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var StaticStore = function StaticStore() {
   var _this = this;
 
@@ -35606,7 +35674,7 @@ var StaticStore = function StaticStore() {
 
 exports.default = new StaticStore();
 
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35624,7 +35692,133 @@ var StringUtil = {
 
 exports.default = StringUtil;
 
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _propTypes = require("prop-types");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _StaticStore = require("../common/StaticStore");
+
+var _StaticStore2 = _interopRequireDefault(_StaticStore);
+
+var _Dropdown = require("./Dropdown");
+
+var _Dropdown2 = _interopRequireDefault(_Dropdown);
+
+var _InputNumber = require("./InputNumber");
+
+var _InputNumber2 = _interopRequireDefault(_InputNumber);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AdditionalSecurities = function (_React$Component) {
+  _inherits(AdditionalSecurities, _React$Component);
+
+  function AdditionalSecurities(props) {
+    _classCallCheck(this, AdditionalSecurities);
+
+    var _this = _possibleConstructorReturn(this, (AdditionalSecurities.__proto__ || Object.getPrototypeOf(AdditionalSecurities)).call(this, props));
+
+    _this.remove = function (id) {};
+
+    _this.typeChangeListener = function (typeCode) {};
+
+    _this.valueChangeListener = function (value) {};
+
+    _this.render = function () {
+      var store = _StaticStore2.default.getStore();
+      return _react2.default.createElement(
+        "div",
+        { className: "additional-securities-frame" },
+        _react2.default.createElement(
+          "p",
+          null,
+          "Additional securities"
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "additional-securities" },
+          _this.props.additionalSecurities.map(function (item) {
+            return _react2.default.createElement(
+              "div",
+              { className: "additional-security-item" },
+              _react2.default.createElement(
+                "div",
+                null,
+                item.type
+              ),
+              _react2.default.createElement(
+                "div",
+                null,
+                item.value
+              ),
+              _react2.default.createElement(
+                "span",
+                { onClick: function onClick() {
+                    return _this.remove(item.id);
+                  } },
+                "\xD7"
+              )
+            );
+          })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "additional-security-input" },
+          _react2.default.createElement(_Dropdown2.default, {
+            label: "Additional security type",
+            items: store.additionalSecurityTypes,
+            value: _this.state.type,
+            changeListener: _this.typeChangeListener
+          }),
+          _react2.default.createElement(_InputNumber2.default, {
+            label: "Additional security value",
+            value: _this.state.value,
+            changeListener: _this.valueChangeListener })
+        )
+      );
+    };
+
+    _this.state = {
+      type: "",
+      value: 0
+    };
+
+    _this.remove = _this.remove.bind(_this);
+    _this.typeChangeListener = _this.typeChangeListener.bind(_this);
+    _this.valueChangeListener = _this.valueChangeListener.bind(_this);
+    return _this;
+  }
+
+  return AdditionalSecurities;
+}(_react2.default.Component);
+
+AdditionalSecurities.propTypes = {
+  additionalSecurities: _propTypes2.default.arrayOf(_propTypes2.default.shape({
+    id: _propTypes2.default.number.isRequired,
+    type: _propTypes2.default.string.isRequired,
+    value: _propTypes2.default.number.isRequired
+  })).isRequired
+};
+exports.default = AdditionalSecurities;
+
+},{"../common/StaticStore":63,"./Dropdown":67,"./InputNumber":72,"prop-types":21,"react":46}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35670,7 +35864,7 @@ var Blocker = function Blocker(_ref) {
 
 exports.default = Blocker;
 
-},{"react":46}],64:[function(require,module,exports){
+},{"react":46}],67:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35689,6 +35883,14 @@ var _InputBlock2 = require('./InputBlock');
 
 var _InputBlock3 = _interopRequireDefault(_InputBlock2);
 
+var _IncreasementIndexer = require('../common/IncreasementIndexer');
+
+var _IncreasementIndexer2 = _interopRequireDefault(_IncreasementIndexer);
+
+var _GlobalEvent = require('../common/GlobalEvent');
+
+var _GlobalEvent2 = _interopRequireDefault(_GlobalEvent);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35704,6 +35906,18 @@ var Dropdown = function (_InputBlock) {
     _classCallCheck(this, Dropdown);
 
     var _this = _possibleConstructorReturn(this, (Dropdown.__proto__ || Object.getPrototypeOf(Dropdown)).call(this, props));
+
+    _this.componentDidMount = function () {
+      var index = _this.state.index;
+      console.error("cout << drop down: " + index + " did mount");
+      _GlobalEvent2.default.addEvent("click", function (originalEvent) {
+        console.error("cout << try to control: ", index);
+      });
+    };
+
+    _this.componentWillUnmount = function () {
+      console.log("cout << component will unmount");
+    };
 
     _this.toggle = function () {
       var current = _this.state.isOpen;
@@ -35784,7 +35998,9 @@ var Dropdown = function (_InputBlock) {
       );
     };
 
-    _this.state = {};
+    _this.state = {
+      index: _IncreasementIndexer2.default.next()
+    };
 
     _this.toggle = _this.toggle.bind(_this);
     _this.close = _this.close.bind(_this);
@@ -35810,7 +36026,7 @@ Dropdown.propTypes = {
 };
 exports.default = Dropdown;
 
-},{"./InputBlock":65,"prop-types":21,"react":46}],65:[function(require,module,exports){
+},{"../common/GlobalEvent":61,"../common/IncreasementIndexer":62,"./InputBlock":68,"prop-types":21,"react":46}],68:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35886,7 +36102,7 @@ InputBlock.propTypes = {
 };
 exports.default = InputBlock;
 
-},{"prop-types":21,"react":46}],66:[function(require,module,exports){
+},{"prop-types":21,"react":46}],69:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35969,7 +36185,7 @@ InputBool.propTypes = {
   value: _propTypes2.default.bool };
 exports.default = InputBool;
 
-},{"../common/StringUtil":62,"./InputBlock":65,"prop-types":21,"react":46}],67:[function(require,module,exports){
+},{"../common/StringUtil":64,"./InputBlock":68,"prop-types":21,"react":46}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36003,6 +36219,10 @@ var _Dropdown2 = _interopRequireDefault(_Dropdown);
 var _InputBool = require('./InputBool');
 
 var _InputBool2 = _interopRequireDefault(_InputBool);
+
+var _AdditionalSecurities = require('./AdditionalSecurities');
+
+var _AdditionalSecurities2 = _interopRequireDefault(_AdditionalSecurities);
 
 var _StaticStore = require('../common/StaticStore');
 
@@ -36070,6 +36290,7 @@ var InputCollector = function InputCollector(props) {
       value: props[_Constant.MORTGAGE_AMOUNT_FIELD_NAME],
       changeListener: buildListener('mortgageAmount') }),
     _react2.default.createElement('br', null),
+    _react2.default.createElement(_AdditionalSecurities2.default, { additionalSecurities: props.additionalSecurities }),
     _react2.default.createElement(
       'div',
       { className: 'action-block' },
@@ -36108,12 +36329,13 @@ InputCollector.propTypes = {
   marketValue: _propTypes2.default.number,
   mortgageAmount: _propTypes2.default.number,
   rating: _propTypes2.default.string,
-  ratingAgency: _propTypes2.default.string
+  ratingAgency: _propTypes2.default.string,
+  additionalSecurities: _propTypes2.default.array
 };
 
 exports.default = InputCollector;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":61,"./Dropdown":64,"./InputBool":66,"./InputDate":68,"./InputNumber":69,"./InputText":70,"prop-types":21,"react":46}],68:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":63,"./AdditionalSecurities":65,"./Dropdown":67,"./InputBool":69,"./InputDate":71,"./InputNumber":72,"./InputText":73,"prop-types":21,"react":46}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36183,7 +36405,7 @@ InputDate.propTypes = {
   value: _propTypes2.default.object };
 exports.default = InputDate;
 
-},{"./InputBlock":65,"prop-types":21,"react":46,"react-datepicker":23}],69:[function(require,module,exports){
+},{"./InputBlock":68,"prop-types":21,"react":46,"react-datepicker":23}],72:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36242,7 +36464,7 @@ InputNumber.propTypes = {
   value: _propTypes2.default.number };
 exports.default = InputNumber;
 
-},{"./InputText":70,"prop-types":21,"react":46}],70:[function(require,module,exports){
+},{"./InputText":73,"prop-types":21,"react":46}],73:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36300,7 +36522,7 @@ InputText.propTypes = {
   value: _propTypes2.default.string };
 exports.default = InputText;
 
-},{"./InputBlock":65,"prop-types":21,"react":46}],71:[function(require,module,exports){
+},{"./InputBlock":68,"prop-types":21,"react":46}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36396,7 +36618,7 @@ ResultTable.propTypes = {
 };
 exports.default = ResultTable;
 
-},{"./TableRow":72,"prop-types":21,"react":46}],72:[function(require,module,exports){
+},{"./TableRow":75,"prop-types":21,"react":46}],75:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36471,7 +36693,7 @@ TableRow.propTypes = {
 };
 exports.default = TableRow;
 
-},{"prop-types":21,"react":46}],73:[function(require,module,exports){
+},{"prop-types":21,"react":46}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36547,7 +36769,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return { isReady: state.isReady };
 })(App);
 
-},{"../common/StaticStore":61,"../component/Blocker":63,"../container/InputCollector":74,"../container/ResultTable":75,"react":46,"react-redux":38}],74:[function(require,module,exports){
+},{"../common/StaticStore":63,"../component/Blocker":66,"../container/InputCollector":77,"../container/ResultTable":78,"react":46,"react-redux":38}],77:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36572,7 +36794,7 @@ var stateToProps = function stateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(stateToProps)(_InputCollector2.default);
 
-},{"../component/InputCollector":67,"react":46,"react-redux":38}],75:[function(require,module,exports){
+},{"../component/InputCollector":70,"react":46,"react-redux":38}],78:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36595,7 +36817,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return state.calculationResult;
 })(_ResultTable2.default);
 
-},{"../component/ResultTable":71,"react":46,"react-redux":38}],76:[function(require,module,exports){
+},{"../component/ResultTable":74,"react":46,"react-redux":38}],79:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -36639,7 +36861,7 @@ window.onload = function () {
   _react2.default.createElement(_App2.default, null)
 ), document.getElementById('frame'));
 
-},{"./action":58,"./container/App":73,"./reducer":80,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],77:[function(require,module,exports){
+},{"./action":58,"./container/App":76,"./reducer":83,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36668,7 +36890,7 @@ var CalculationResult = function CalculationResult() {
 
 exports.default = CalculationResult;
 
-},{"../action":58}],78:[function(require,module,exports){
+},{"../action":58}],81:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36706,7 +36928,7 @@ var IsReady = function IsReady() {
 
 exports.default = IsReady;
 
-},{"../action":58,"../common/StaticStore":61}],79:[function(require,module,exports){
+},{"../action":58,"../common/StaticStore":63}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36748,7 +36970,16 @@ var defaultViewModal = {
   marketValue: 0,
   mortgageAmount: 0,
   rating: '',
-  ratingAgency: ''
+  ratingAgency: '',
+  additionalSecurities: [{
+    id: 1,
+    type: "ast_01",
+    value: 1000
+  }, {
+    id: 2,
+    type: "ast_02",
+    value: 4000
+  }]
 };
 
 var buildAutoInputState = function buildAutoInputState() {
@@ -36796,7 +37027,7 @@ var UserInput = function UserInput() {
 
 exports.default = UserInput;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":61,"moment":14}],80:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":63,"moment":14}],83:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36827,4 +37058,4 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./CalculationResult":77,"./IsReady":78,"./UserInput":79,"redux":49}]},{},[76]);
+},{"./CalculationResult":80,"./IsReady":81,"./UserInput":82,"redux":49}]},{},[79]);
