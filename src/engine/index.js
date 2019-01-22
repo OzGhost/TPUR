@@ -15,13 +15,16 @@ const store = createStore(
 )
 
 window.onload = function() {
-  console.warn('cout << onload event was fired!')
+
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('frame')
+  )
+
+  window.TPUR.config.comboboxInfoURI = window.comboboxLink
+  window.TPUR.config.calculatorURI = window.calculationLink
   store.dispatch(loadComboboxInput())
 }
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('frame')
-)

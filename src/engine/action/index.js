@@ -2,8 +2,6 @@ import { USER_INPUT_SIGNAL } from '../common/Constant'
 import GlobalConfig from '../common/GlobalConfig'
 
 const host = GlobalConfig.get('host')
-const comboboxInfoURI = host + GlobalConfig.get('comboboxInfoURI')
-const calculatorURI = host + GlobalConfig.get('calculatorURI')
 
 export const UPDATE_USER_INPUT = 'User input updated'
 export const AUTO_FILL_INPUT = 'Auto fill user input'
@@ -24,6 +22,7 @@ const update = (signal, key, value) => (
 )
 
 export const loadComboboxInput = () => dispatch => {
+  const comboboxInfoURI = host + GlobalConfig.get('comboboxInfoURI');
   fetch(comboboxInfoURI)
     .then(res => res.json())
     .then(json => {
@@ -48,6 +47,7 @@ export const autoFill = () => ({
 export const launch = () => (dispatch, getState) => {
   dispatch(cleanResult())
   const payload = GlobalConfig.get('convertPayload')(getState().userInput)
+  const calculatorURI = host + GlobalConfig.get('calculatorURI')
 
   fetch(
     calculatorURI,
