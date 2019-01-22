@@ -35741,6 +35741,17 @@ var AdditionalSecurities = function (_React$Component) {
 
     _this.valueChangeListener = function (value) {};
 
+    _this.getTypeName = function (typeCode) {
+      var types = _StaticStore2.default.getStore().additionalSecurityTypes || [];
+      var len = types.length;
+      for (var i = 0; i < len; i++) {
+        if (typeCode === types[i].code) {
+          return types[i].name;
+        }
+      }
+      return "";
+    };
+
     _this.render = function () {
       var store = _StaticStore2.default.getStore();
       return _react2.default.createElement(
@@ -35761,7 +35772,7 @@ var AdditionalSecurities = function (_React$Component) {
               _react2.default.createElement(
                 "div",
                 null,
-                item.type
+                _this.getTypeName(item.type)
               ),
               _react2.default.createElement(
                 "div",
@@ -35782,15 +35793,20 @@ var AdditionalSecurities = function (_React$Component) {
           "div",
           { className: "additional-security-input" },
           _react2.default.createElement(_Dropdown2.default, {
-            label: "Additional security type",
+            label: "Type",
             items: store.additionalSecurityTypes,
             value: _this.state.type,
             changeListener: _this.typeChangeListener
           }),
           _react2.default.createElement(_InputNumber2.default, {
-            label: "Additional security value",
+            label: "Value",
             value: _this.state.value,
-            changeListener: _this.valueChangeListener })
+            changeListener: _this.valueChangeListener }),
+          _react2.default.createElement(
+            "button",
+            null,
+            "+"
+          )
         )
       );
     };

@@ -254,7 +254,8 @@ br {
     border: 1px solid lightgrey;
     background: white;
     color: black;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    height: 36px; }
   .input-block input[type="checkbox"] {
     display: none; }
   .input-block label {
@@ -398,7 +399,7 @@ br {
 
 .additional-securities-frame {
   width: 750px;
-  margin: auto; }
+  margin: 36px auto; }
 
 .additional-security-input:after {
   content: "";
@@ -411,3 +412,43 @@ br {
 .additional-security-input .input-block {
   padding: 6px 8px;
   width: 45%; }
+
+.additional-security-input button {
+  margin-top: 38px;
+  height: 36px;
+  width: 10%;
+  background: #7edeff;
+  color: white;
+  border: none; }
+  .additional-security-input button:hover {
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 12px 0 rgba(0, 0, 0, 0.19); }
+
+.additional-securities {
+  padding: 8px 0; }
+
+.additional-security-item {
+  border-bottom: 1px dashed lightgrey;
+  position: relative; }
+  .additional-security-item:after {
+    content: "";
+    clear: both;
+    display: block;
+    height: 0;
+    padding: 0;
+    margin: 0; }
+  .additional-security-item div {
+    display: inline-block;
+    float: left;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    width: 50%; }
+  .additional-security-item span {
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    right: 0;
+    color: red;
+    padding: 8px 12px;
+    cursor: pointer; }
+    .additional-security-item span:hover {
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 12px 0 rgba(0, 0, 0, 0.19); }

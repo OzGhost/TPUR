@@ -36,6 +36,17 @@ class AdditionalSecurities extends React.Component {
   valueChangeListener = value => {
   };
 
+  getTypeName = typeCode => {
+    const types = StaticStore.getStore().additionalSecurityTypes || [];
+    const len = types.length;
+    for (let i = 0; i < len; i++) {
+      if (typeCode === types[i].code) {
+        return types[i].name;
+      }
+    }
+    return "";
+  };
+
   render = () => {
     const store = StaticStore.getStore();
     return (
@@ -44,7 +55,7 @@ class AdditionalSecurities extends React.Component {
         <div className="additional-securities">
           {this.props.additionalSecurities.map(item => 
             <div className="additional-security-item">
-              <div>{item.type}</div>
+              <div>{this.getTypeName(item.type)}</div>
               <div>{item.value}</div>
               <span onClick={()=>this.remove(item.id)}>&times;</span>
             </div>
@@ -52,15 +63,16 @@ class AdditionalSecurities extends React.Component {
         </div>
         <div className="additional-security-input">
           <Dropdown
-              label="Additional security type"
+              label="Type"
               items={store.additionalSecurityTypes}
               value={this.state.type}
               changeListener={this.typeChangeListener}
           />
           <InputNumber
-              label="Additional security value"
+              label="Value"
               value={this.state.value}
               changeListener={this.valueChangeListener}/>
+          <button>+</button>
         </div>
       </div>
     );

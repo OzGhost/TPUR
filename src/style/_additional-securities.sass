@@ -1,7 +1,7 @@
 
 .additional-securities-frame
   width: 750px
-  margin: auto
+  margin: 36px auto
 
 .additional-security-input
   
@@ -16,4 +16,50 @@
   .input-block
     padding: 6px 8px
     width: 45%
+
+  button
+    margin-top: 38px
+    height: 36px
+    width: 10%
+    background: #7edeff
+    color: white
+    border: none
+
+    &:hover
+        box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2), 0 4px 12px 0 rgba(0,0,0,0.19)
+
+.additional-securities
+  padding: 8px 0
+
+.additional-security-item
+  border-bottom: 1px dashed lightgrey
+  position: relative
+
+  &:after
+    content: ""
+    clear: both
+    display: block
+    height: 0
+    padding: 0
+    margin: 0
+
+  div
+    display: inline-block
+    float: left
+    padding: 8px 12px
+    box-sizing: border-box
+    width: 50%
+
+  span
+    position: absolute
+    display: inline-block
+    top: 0
+    right: 0
+    color: red
+    padding: 8px 12px
+    cursor: pointer
+
+    &:hover
+      box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2), 0 4px 12px 0 rgba(0,0,0,0.19)
+
 
