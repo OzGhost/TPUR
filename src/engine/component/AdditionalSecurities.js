@@ -3,6 +3,7 @@ import React from "react";
 import StaticStore from "../common/StaticStore";
 import Dropdown from "./Dropdown";
 import InputNumber from "./InputNumber";
+import UniqueId from "../common/UniqueId";
 
 class AdditionalSecurities extends React.Component {
 
@@ -11,7 +12,9 @@ class AdditionalSecurities extends React.Component {
       id: PropTypes.number.isRequired,
       type: PropTypes.string.isRequired,
       value: PropTypes.number.isRequired
-    })).isRequired
+    })).isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onAdd: PropTypes.func.isRequired
   }
   
   constructor(props) {
@@ -25,15 +28,25 @@ class AdditionalSecurities extends React.Component {
     this.remove = this.remove.bind(this);
     this.typeChangeListener = this.typeChangeListener.bind(this);
     this.valueChangeListener = this.valueChangeListener.bind(this);
+    this.submit = this.submit.bind(this);
   };
 
   remove = id => {
+    this.props.onRemove(id);
   };
 
   typeChangeListener = typeCode => {
+    this.setState({
+      ...this.state,
+      type: typeCode
+    });
   };
 
   valueChangeListener = value => {
+    this.setState({
+      ...this.state,
+      value: value
+    });
   };
 
   getTypeName = typeCode => {
@@ -47,6 +60,15 @@ class AdditionalSecurities extends React.Component {
     return "";
   };
 
+  submit = () => {
+    if (this.state.type == "" || this.state.value < 1) {
+      return;
+    }
+    var currentKeys = this.props.additionalSecurities.map(e => e.id);
+    var next = {...this.state, id: UniqueId.nextWithout(currentKeys)};
+    this.props.onAdd(next);
+  }
+
   render = () => {
     const store = StaticStore.getStore();
     return (
@@ -54,7 +76,7 @@ class AdditionalSecurities extends React.Component {
         <p>Additional securities</p>
         <div className="additional-securities">
           {this.props.additionalSecurities.map(item => 
-            <div className="additional-security-item">
+            <div className="additional-security-item" key={item.id}>
               <div>{this.getTypeName(item.type)}</div>
               <div>{item.value}</div>
               <span onClick={()=>this.remove(item.id)}>&times;</span>
@@ -72,7 +94,7 @@ class AdditionalSecurities extends React.Component {
               label="Value"
               value={this.state.value}
               changeListener={this.valueChangeListener}/>
-          <button>+</button>
+          <button onClick={this.submit}>+</button>
         </div>
       </div>
     );

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Cantarell");
 .blocker__ground {
   display: block;
   font-size: 0;
@@ -254,8 +255,7 @@ br {
     border: 1px solid lightgrey;
     background: white;
     color: black;
-    box-sizing: border-box;
-    height: 36px; }
+    box-sizing: border-box; }
   .input-block input[type="checkbox"] {
     display: none; }
   .input-block label {
@@ -452,3 +452,8 @@ br {
     cursor: pointer; }
     .additional-security-item span:hover {
       box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 12px 0 rgba(0, 0, 0, 0.19); }
+
+#frame * {
+  font-family: 'Cantarell', sans-serif;
+  font-size: 14px;
+  line-height: 1.5; }

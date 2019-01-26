@@ -8,6 +8,8 @@ export const AUTO_FILL_INPUT = 'Auto fill user input'
 export const COMBOBOX_INFO_ARRIVED = 'Combo box info is arrived'
 export const RECEIVE_CALCULATION_RESULT = 'Receive calcuation result'
 export const CLEAN_RESULT = 'Result table cleaning'
+export const POST_AS = "New additional security";
+export const DROP_AS = "Delete additional security";
 
 export const updateUserInput = (key, value) =>
   update(USER_INPUT_SIGNAL, key, value)
@@ -72,3 +74,15 @@ const receiveCalculationResult = result => ({
 const cleanResult = () => ({
   type: CLEAN_RESULT
 })
+
+export const postAS = payload => ({
+  type: POST_AS,
+  signal: USER_INPUT_SIGNAL,
+  as: payload
+});
+
+export const dropAS = id => ({
+  type: DROP_AS,
+  signal: USER_INPUT_SIGNAL,
+  id: id
+});

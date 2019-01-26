@@ -27,11 +27,13 @@ class Dropdown extends InputBlock {
   }
 
   componentDidMount = () => {
+    /*
     let index = this.state.index;
     console.error("cout << drop down: "+index+" did mount");
     GlobalEvent.addEvent("click", function(originalEvent){
       console.error("cout << try to control: ", index);
     });
+    */
   }
 
   componentWillUnmount = () => {

@@ -35434,7 +35434,7 @@ function symbolObservablePonyfill(root) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.launch = exports.autoFill = exports.loadComboboxInput = exports.updateUserInput = exports.CLEAN_RESULT = exports.RECEIVE_CALCULATION_RESULT = exports.COMBOBOX_INFO_ARRIVED = exports.AUTO_FILL_INPUT = exports.UPDATE_USER_INPUT = undefined;
+exports.dropAS = exports.postAS = exports.launch = exports.autoFill = exports.loadComboboxInput = exports.updateUserInput = exports.DROP_AS = exports.POST_AS = exports.CLEAN_RESULT = exports.RECEIVE_CALCULATION_RESULT = exports.COMBOBOX_INFO_ARRIVED = exports.AUTO_FILL_INPUT = exports.UPDATE_USER_INPUT = undefined;
 
 var _Constant = require('../common/Constant');
 
@@ -35445,14 +35445,14 @@ var _GlobalConfig2 = _interopRequireDefault(_GlobalConfig);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var host = _GlobalConfig2.default.get('host');
-var comboboxInfoURI = host + _GlobalConfig2.default.get('comboboxInfoURI');
-var calculatorURI = host + _GlobalConfig2.default.get('calculatorURI');
 
 var UPDATE_USER_INPUT = exports.UPDATE_USER_INPUT = 'User input updated';
 var AUTO_FILL_INPUT = exports.AUTO_FILL_INPUT = 'Auto fill user input';
 var COMBOBOX_INFO_ARRIVED = exports.COMBOBOX_INFO_ARRIVED = 'Combo box info is arrived';
 var RECEIVE_CALCULATION_RESULT = exports.RECEIVE_CALCULATION_RESULT = 'Receive calcuation result';
 var CLEAN_RESULT = exports.CLEAN_RESULT = 'Result table cleaning';
+var POST_AS = exports.POST_AS = "New additional security";
+var DROP_AS = exports.DROP_AS = "Delete additional security";
 
 var updateUserInput = exports.updateUserInput = function updateUserInput(key, value) {
   return update(_Constant.USER_INPUT_SIGNAL, key, value);
@@ -35469,6 +35469,7 @@ var update = function update(signal, key, value) {
 
 var loadComboboxInput = exports.loadComboboxInput = function loadComboboxInput() {
   return function (dispatch) {
+    var comboboxInfoURI = host + _GlobalConfig2.default.get('comboboxInfoURI');
     fetch(comboboxInfoURI).then(function (res) {
       return res.json();
     }).then(function (json) {
@@ -35499,6 +35500,7 @@ var launch = exports.launch = function launch() {
   return function (dispatch, getState) {
     dispatch(cleanResult());
     var payload = _GlobalConfig2.default.get('convertPayload')(getState().userInput);
+    var calculatorURI = host + _GlobalConfig2.default.get('calculatorURI');
 
     fetch(calculatorURI, {
       method: 'POST',
@@ -35523,6 +35525,22 @@ var receiveCalculationResult = function receiveCalculationResult(result) {
 var cleanResult = function cleanResult() {
   return {
     type: CLEAN_RESULT
+  };
+};
+
+var postAS = exports.postAS = function postAS(payload) {
+  return {
+    type: POST_AS,
+    signal: _Constant.USER_INPUT_SIGNAL,
+    as: payload
+  };
+};
+
+var dropAS = exports.dropAS = function dropAS(id) {
+  return {
+    type: DROP_AS,
+    signal: _Constant.USER_INPUT_SIGNAL,
+    id: id
   };
 };
 
@@ -35699,6 +35717,41 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var UniqueId = function UniqueId() {
+  var _this = this;
+
+  _classCallCheck(this, UniqueId);
+
+  this.current = 0;
+
+  this.nextWithout = function (excepts) {
+    _this.current++;
+    while (!_this.acceptable(excepts)) {
+      _this.current++;
+    }
+    return _this.current;
+  };
+
+  this.acceptable = function (excepts) {
+    return excepts.filter(function (e) {
+      return e == _this.current;
+    }).length === 0;
+  };
+};
+
+exports.default = new UniqueId();
+
+},{}],66:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _propTypes = require("prop-types");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -35719,6 +35772,10 @@ var _InputNumber = require("./InputNumber");
 
 var _InputNumber2 = _interopRequireDefault(_InputNumber);
 
+var _UniqueId = require("../common/UniqueId");
+
+var _UniqueId2 = _interopRequireDefault(_UniqueId);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35735,11 +35792,21 @@ var AdditionalSecurities = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (AdditionalSecurities.__proto__ || Object.getPrototypeOf(AdditionalSecurities)).call(this, props));
 
-    _this.remove = function (id) {};
+    _this.remove = function (id) {
+      _this.props.onRemove(id);
+    };
 
-    _this.typeChangeListener = function (typeCode) {};
+    _this.typeChangeListener = function (typeCode) {
+      _this.setState(_extends({}, _this.state, {
+        type: typeCode
+      }));
+    };
 
-    _this.valueChangeListener = function (value) {};
+    _this.valueChangeListener = function (value) {
+      _this.setState(_extends({}, _this.state, {
+        value: value
+      }));
+    };
 
     _this.getTypeName = function (typeCode) {
       var types = _StaticStore2.default.getStore().additionalSecurityTypes || [];
@@ -35750,6 +35817,17 @@ var AdditionalSecurities = function (_React$Component) {
         }
       }
       return "";
+    };
+
+    _this.submit = function () {
+      if (_this.state.type == "" || _this.state.value < 1) {
+        return;
+      }
+      var currentKeys = _this.props.additionalSecurities.map(function (e) {
+        return e.id;
+      });
+      var next = _extends({}, _this.state, { id: _UniqueId2.default.nextWithout(currentKeys) });
+      _this.props.onAdd(next);
     };
 
     _this.render = function () {
@@ -35768,7 +35846,7 @@ var AdditionalSecurities = function (_React$Component) {
           _this.props.additionalSecurities.map(function (item) {
             return _react2.default.createElement(
               "div",
-              { className: "additional-security-item" },
+              { className: "additional-security-item", key: item.id },
               _react2.default.createElement(
                 "div",
                 null,
@@ -35804,7 +35882,7 @@ var AdditionalSecurities = function (_React$Component) {
             changeListener: _this.valueChangeListener }),
           _react2.default.createElement(
             "button",
-            null,
+            { onClick: _this.submit },
             "+"
           )
         )
@@ -35819,6 +35897,7 @@ var AdditionalSecurities = function (_React$Component) {
     _this.remove = _this.remove.bind(_this);
     _this.typeChangeListener = _this.typeChangeListener.bind(_this);
     _this.valueChangeListener = _this.valueChangeListener.bind(_this);
+    _this.submit = _this.submit.bind(_this);
     return _this;
   }
 
@@ -35830,11 +35909,13 @@ AdditionalSecurities.propTypes = {
     id: _propTypes2.default.number.isRequired,
     type: _propTypes2.default.string.isRequired,
     value: _propTypes2.default.number.isRequired
-  })).isRequired
+  })).isRequired,
+  onRemove: _propTypes2.default.func.isRequired,
+  onAdd: _propTypes2.default.func.isRequired
 };
 exports.default = AdditionalSecurities;
 
-},{"../common/StaticStore":63,"./Dropdown":67,"./InputNumber":72,"prop-types":21,"react":46}],66:[function(require,module,exports){
+},{"../common/StaticStore":63,"../common/UniqueId":65,"./Dropdown":68,"./InputNumber":73,"prop-types":21,"react":46}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35880,7 +35961,7 @@ var Blocker = function Blocker(_ref) {
 
 exports.default = Blocker;
 
-},{"react":46}],67:[function(require,module,exports){
+},{"react":46}],68:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35924,11 +36005,13 @@ var Dropdown = function (_InputBlock) {
     var _this = _possibleConstructorReturn(this, (Dropdown.__proto__ || Object.getPrototypeOf(Dropdown)).call(this, props));
 
     _this.componentDidMount = function () {
-      var index = _this.state.index;
-      console.error("cout << drop down: " + index + " did mount");
-      _GlobalEvent2.default.addEvent("click", function (originalEvent) {
+      /*
+      let index = this.state.index;
+      console.error("cout << drop down: "+index+" did mount");
+      GlobalEvent.addEvent("click", function(originalEvent){
         console.error("cout << try to control: ", index);
       });
+      */
     };
 
     _this.componentWillUnmount = function () {
@@ -36042,7 +36125,7 @@ Dropdown.propTypes = {
 };
 exports.default = Dropdown;
 
-},{"../common/GlobalEvent":61,"../common/IncreasementIndexer":62,"./InputBlock":68,"prop-types":21,"react":46}],68:[function(require,module,exports){
+},{"../common/GlobalEvent":61,"../common/IncreasementIndexer":62,"./InputBlock":69,"prop-types":21,"react":46}],69:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36118,7 +36201,7 @@ InputBlock.propTypes = {
 };
 exports.default = InputBlock;
 
-},{"prop-types":21,"react":46}],69:[function(require,module,exports){
+},{"prop-types":21,"react":46}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36201,7 +36284,7 @@ InputBool.propTypes = {
   value: _propTypes2.default.bool };
 exports.default = InputBool;
 
-},{"../common/StringUtil":64,"./InputBlock":68,"prop-types":21,"react":46}],70:[function(require,module,exports){
+},{"../common/StringUtil":64,"./InputBlock":69,"prop-types":21,"react":46}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36306,7 +36389,15 @@ var InputCollector = function InputCollector(props) {
       value: props[_Constant.MORTGAGE_AMOUNT_FIELD_NAME],
       changeListener: buildListener('mortgageAmount') }),
     _react2.default.createElement('br', null),
-    _react2.default.createElement(_AdditionalSecurities2.default, { additionalSecurities: props.additionalSecurities }),
+    _react2.default.createElement(_AdditionalSecurities2.default, {
+      onRemove: function onRemove(id) {
+        return props.dispatch((0, _action.dropAS)(id));
+      },
+      onAdd: function onAdd(payload) {
+        return props.dispatch((0, _action.postAS)(payload));
+      },
+      additionalSecurities: props.additionalSecurities
+    }),
     _react2.default.createElement(
       'div',
       { className: 'action-block' },
@@ -36351,7 +36442,7 @@ InputCollector.propTypes = {
 
 exports.default = InputCollector;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":63,"./AdditionalSecurities":65,"./Dropdown":67,"./InputBool":69,"./InputDate":71,"./InputNumber":72,"./InputText":73,"prop-types":21,"react":46}],71:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":63,"./AdditionalSecurities":66,"./Dropdown":68,"./InputBool":70,"./InputDate":72,"./InputNumber":73,"./InputText":74,"prop-types":21,"react":46}],72:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36421,7 +36512,7 @@ InputDate.propTypes = {
   value: _propTypes2.default.object };
 exports.default = InputDate;
 
-},{"./InputBlock":68,"prop-types":21,"react":46,"react-datepicker":23}],72:[function(require,module,exports){
+},{"./InputBlock":69,"prop-types":21,"react":46,"react-datepicker":23}],73:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36480,7 +36571,7 @@ InputNumber.propTypes = {
   value: _propTypes2.default.number };
 exports.default = InputNumber;
 
-},{"./InputText":73,"prop-types":21,"react":46}],73:[function(require,module,exports){
+},{"./InputText":74,"prop-types":21,"react":46}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36538,7 +36629,7 @@ InputText.propTypes = {
   value: _propTypes2.default.string };
 exports.default = InputText;
 
-},{"./InputBlock":68,"prop-types":21,"react":46}],74:[function(require,module,exports){
+},{"./InputBlock":69,"prop-types":21,"react":46}],75:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36567,7 +36658,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var orderedKeys = ["EQUITY_CAPITAL", "RISK", "REFINANCING", "IRS", "HEDGE_COSTS", "ETP_FEASIBILITY", "FORWARD", "DUTY_COSTS", "MARKET_BALANCING", "FOREIGN_SURCHARGE", "PRODUCTION", "DISTRIBUTION_COSTS", "MINIMAL_OFFER", "SURCHARGE", "RECOMMENDED_INTEREST_RATE", "MORTGAGE_SPLITTING_1", "MORTGAGE_SPLITTING_2", "MORTGAGE_SPLITTING_3", "MORTGAGE_SPLITTING_4", "VOLUME_DISCOUNT", "FLOOR", "COMPETENCE_LEVEL_1", "COMPETENCE_LEVEL_2", "COMPETENCE_LEVEL_3", "COMPETENCE_LEVEL_4", "COMPETENCE_LEVEL_5", "COMPETENCE_LEVEL_6", "COMPETENCE_LEVEL_7", "COMPETENCE_LEVEL_8", "RAW_RECOMMENDED_INTEREST_RATE"];
+var orderedKeys = ["EQUITY_CAPITAL", "RISK", "REFINANCING", "IRS", "HEDGE_COSTS", "ETP_FEASIBILITY", "FORWARD", "DUTY_COSTS", "PROPERTY_CONTRIBUTION", "PROFIT_CONTRIBUTION", "CUSTOMER_CONTRIBUTION", "MARKET_BALANCING", "FOREIGN_SURCHARGE", "PRODUCTION", "DISTRIBUTION_COSTS", "MINIMAL_OFFER", "SURCHARGE", "RECOMMENDED_INTEREST_RATE", "MORTGAGE_SPLITTING_1", "MORTGAGE_SPLITTING_2", "MORTGAGE_SPLITTING_3", "MORTGAGE_SPLITTING_4", "VOLUME_DISCOUNT", "FLOOR", "COMPETENCE_LEVEL_1", "COMPETENCE_LEVEL_2", "COMPETENCE_LEVEL_3", "COMPETENCE_LEVEL_4", "COMPETENCE_LEVEL_5", "COMPETENCE_LEVEL_6", "COMPETENCE_LEVEL_7", "COMPETENCE_LEVEL_8", "RAW_RECOMMENDED_INTEREST_RATE"];
 
 var ResultTable = function (_React$Component) {
   _inherits(ResultTable, _React$Component);
@@ -36634,7 +36725,7 @@ ResultTable.propTypes = {
 };
 exports.default = ResultTable;
 
-},{"./TableRow":75,"prop-types":21,"react":46}],75:[function(require,module,exports){
+},{"./TableRow":76,"prop-types":21,"react":46}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36709,7 +36800,7 @@ TableRow.propTypes = {
 };
 exports.default = TableRow;
 
-},{"prop-types":21,"react":46}],76:[function(require,module,exports){
+},{"prop-types":21,"react":46}],77:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36760,9 +36851,7 @@ var App = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
-      console.warn('cout << app mounted!');
-    }, _this.render = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
       if (!_this.props.isReady) return _react2.default.createElement(
         'div',
         { className: 'TPUR-app' },
@@ -36785,7 +36874,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return { isReady: state.isReady };
 })(App);
 
-},{"../common/StaticStore":63,"../component/Blocker":66,"../container/InputCollector":77,"../container/ResultTable":78,"react":46,"react-redux":38}],77:[function(require,module,exports){
+},{"../common/StaticStore":63,"../component/Blocker":67,"../container/InputCollector":78,"../container/ResultTable":79,"react":46,"react-redux":38}],78:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36810,7 +36899,7 @@ var stateToProps = function stateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(stateToProps)(_InputCollector2.default);
 
-},{"../component/InputCollector":70,"react":46,"react-redux":38}],78:[function(require,module,exports){
+},{"../component/InputCollector":71,"react":46,"react-redux":38}],79:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36833,7 +36922,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return state.calculationResult;
 })(_ResultTable2.default);
 
-},{"../component/ResultTable":74,"react":46,"react-redux":38}],79:[function(require,module,exports){
+},{"../component/ResultTable":75,"react":46,"react-redux":38}],80:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -36867,17 +36956,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger.createLogger)()));
 
 window.onload = function () {
-  console.warn('cout << onload event was fired!');
+
+  (0, _reactDom.render)(_react2.default.createElement(
+    _reactRedux.Provider,
+    { store: store },
+    _react2.default.createElement(_App2.default, null)
+  ), document.getElementById('frame'));
+
+  /*
+  window.TPUR.config.comboboxInfoURI = window.comboboxLink
+  window.TPUR.config.calculatorURI = window.calculationLink
+  */
   store.dispatch((0, _action.loadComboboxInput)());
 };
 
-(0, _reactDom.render)(_react2.default.createElement(
-  _reactRedux.Provider,
-  { store: store },
-  _react2.default.createElement(_App2.default, null)
-), document.getElementById('frame'));
-
-},{"./action":58,"./container/App":76,"./reducer":83,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],80:[function(require,module,exports){
+},{"./action":58,"./container/App":77,"./reducer":84,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],81:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36906,7 +36999,7 @@ var CalculationResult = function CalculationResult() {
 
 exports.default = CalculationResult;
 
-},{"../action":58}],81:[function(require,module,exports){
+},{"../action":58}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36944,7 +37037,7 @@ var IsReady = function IsReady() {
 
 exports.default = IsReady;
 
-},{"../action":58,"../common/StaticStore":63}],82:[function(require,module,exports){
+},{"../action":58,"../common/StaticStore":63}],83:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36967,6 +37060,8 @@ var _action = require('../action');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var defaultViewModal = {
@@ -36987,15 +37082,7 @@ var defaultViewModal = {
   mortgageAmount: 0,
   rating: '',
   ratingAgency: '',
-  additionalSecurities: [{
-    id: 1,
-    type: "ast_01",
-    value: 1000
-  }, {
-    id: 2,
-    type: "ast_02",
-    value: 4000
-  }]
+  additionalSecurities: []
 };
 
 var buildAutoInputState = function buildAutoInputState() {
@@ -37012,7 +37099,9 @@ var buildAutoInputState = function buildAutoInputState() {
     result[fieldName] = getFirstCode(fieldName);
   });
 
-  result[_Constant.PAYOUT_DATE_FIELD_NAME] = (0, _moment2.default)("2000-11-11");
+  var asCode = getFirstCode("additionalSecurityTypes");
+
+  result[_Constant.PAYOUT_DATE_FIELD_NAME] = (0, _moment2.default)().add(1, 'y');
   result[_Constant.ETP_FIELD_NAME] = true;
   result[_Constant.VIOLATION_FIELD_NAME] = true;
   result[_Constant.FOREIGN_SURCHARGE_FIELD_NAME] = true;
@@ -37020,6 +37109,11 @@ var buildAutoInputState = function buildAutoInputState() {
   result[_Constant.AMOUNT_FIELD_NAME] = 40000;
   result[_Constant.MARKET_VALUE_FIELD_NAME] = 60000;
   result[_Constant.MORTGAGE_AMOUNT_FIELD_NAME] = 80000;
+  result["additionalSecurities"] = [{
+    id: 1,
+    type: asCode,
+    value: 40000000
+  }];
 
   return result;
 };
@@ -37028,6 +37122,7 @@ var UserInput = function UserInput() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultViewModal;
   var action = arguments[1];
 
+  var oldState = state;
   if (action.signal === _action.AUTO_FILL_INPUT) return buildAutoInputState();
 
   if (action.signal !== _Constant.USER_INPUT_SIGNAL) return state;
@@ -37036,6 +37131,18 @@ var UserInput = function UserInput() {
     case _action.UPDATE_USER_INPUT:
       return _extends({}, state, _defineProperty({}, action.key, action.value));
 
+    case _action.POST_AS:
+      return _extends({}, oldState, {
+        additionalSecurities: [].concat(_toConsumableArray(oldState.additionalSecurities), [action.as])
+      });
+
+    case _action.DROP_AS:
+      return _extends({}, oldState, {
+        additionalSecurities: oldState.additionalSecurities.filter(function (e) {
+          return e.id !== action.id;
+        })
+      });
+
     default:
       return state;
   }
@@ -37043,7 +37150,7 @@ var UserInput = function UserInput() {
 
 exports.default = UserInput;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":63,"moment":14}],83:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":63,"moment":14}],84:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37074,4 +37181,4 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./CalculationResult":80,"./IsReady":81,"./UserInput":82,"redux":49}]},{},[79]);
+},{"./CalculationResult":81,"./IsReady":82,"./UserInput":83,"redux":49}]},{},[80]);

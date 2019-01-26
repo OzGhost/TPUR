@@ -9,7 +9,7 @@ import InputBool from './InputBool'
 import AdditionalSecurities from './AdditionalSecurities'
 import StaticStore from '../common/StaticStore'
 
-import { updateUserInput, autoFill, launch } from '../action'
+import { updateUserInput, autoFill, launch, postAS, dropAS } from '../action'
 
 import { COMBOBOX_FIELDS_LABEL, COMBOBOX_FIELDS_NAME
         , PAYOUT_DATE_FIELD_NAME
@@ -83,7 +83,11 @@ const InputCollector = (props) => {
 
       <br/>
 
-      <AdditionalSecurities additionalSecurities={props.additionalSecurities}/>
+      <AdditionalSecurities
+        onRemove={id => props.dispatch(dropAS(id))}
+        onAdd={payload => props.dispatch(postAS(payload))}
+        additionalSecurities={props.additionalSecurities}
+      />
 
       <div className="action-block">
         <button onClick={()=>props.dispatch(autoFill())}>

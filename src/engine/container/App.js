@@ -8,10 +8,6 @@ import StaticStore from '../common/StaticStore'
 
 class App extends React.Component {
 
-  componentDidMount = () => {
-    console.warn('cout << app mounted!');
-  }
-
   render = () => {
     if (!this.props.isReady)
       return (

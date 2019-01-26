@@ -10,7 +10,7 @@ import { USER_INPUT_SIGNAL, COMBOBOX_FIELDS_NAME
         , MARKET_VALUE_FIELD_NAME
         , MORTGAGE_AMOUNT_FIELD_NAME
         } from '../common/Constant'
-import { UPDATE_USER_INPUT, AUTO_FILL_INPUT } from '../action'
+import { UPDATE_USER_INPUT, AUTO_FILL_INPUT, POST_AS, DROP_AS } from '../action'
 
 const defaultViewModal = {
   bank: '',
@@ -30,18 +30,7 @@ const defaultViewModal = {
   mortgageAmount: 0,
   rating: '',
   ratingAgency: '',
-  additionalSecurities: [
-    {
-      id: 1,
-      type: "ast_01",
-      value: 1000
-    },
-    {
-      id: 2,
-      type: "ast_02",
-      value: 4000
-    }
-  ]
+  additionalSecurities: []
 }
 
 const buildAutoInputState = () => {
@@ -59,7 +48,9 @@ const buildAutoInputState = () => {
     result[fieldName] = getFirstCode(fieldName)
   })
 
-  result[PAYOUT_DATE_FIELD_NAME] = moment("2000-11-11");
+  var asCode = getFirstCode("additionalSecurityTypes");
+
+  result[PAYOUT_DATE_FIELD_NAME] = moment().add(1, 'y');
   result[ETP_FIELD_NAME] = true
   result[VIOLATION_FIELD_NAME] = true
   result[FOREIGN_SURCHARGE_FIELD_NAME] = true
@@ -67,11 +58,17 @@ const buildAutoInputState = () => {
   result[AMOUNT_FIELD_NAME] = 40000
   result[MARKET_VALUE_FIELD_NAME] = 60000
   result[MORTGAGE_AMOUNT_FIELD_NAME] = 80000
+  result["additionalSecurities"] = [{
+    id: 1,
+    type: asCode,
+    value: 40000000
+  }]
 
   return result
 }
 
 const UserInput = (state = defaultViewModal, action) => {
+  var oldState = state;
   if (action.signal === AUTO_FILL_INPUT)
     return buildAutoInputState()
 
@@ -84,6 +81,19 @@ const UserInput = (state = defaultViewModal, action) => {
         ...state,
         [action.key]: action.value
       }
+
+    case POST_AS:
+      return {
+        ...oldState,
+        additionalSecurities: [...oldState.additionalSecurities, action.as]
+      };
+
+    case DROP_AS:
+      return {
+        ...oldState,
+        additionalSecurities: oldState.additionalSecurities
+                                      .filter(e => e.id !== action.id)
+      };
 
     default:
       return state

@@ -173,14 +173,22 @@
         },
         "financialCheck": {
           "etpFeasibility": true,
-          "violationMinRequirements": true
+          "violationMinRequirements": true,
+          "additionalSecurityManagement": {
+            "additionalSecurities": [
+              {
+                "amount": 40000000,
+                "additionalSecurity": "ast_01"
+              }
+            ]
+          }
         }
       },
       "product": {
         "currentTranche": {
           "productCode": "FIXED_RATE_MORTGAGE",
           "amountPiece": 40000,
-          "payOutDate": "11.11.2000",
+          "payOutDate": "26.01.2020",
           "period": 2
         }
       },
@@ -188,14 +196,14 @@
         "debtors": [
           {
             "person": {
-              "firstName": "Christina",
-              "lastName": "Lange",
-              "nationality": "country-1"
+              "firstName": "System",
+              "lastName": "User",
+              "nationality": "Vietnam"
             },
             "address": {
               "zipCode": "70000",
               "city": "HCM",
-              "country": "country-1"
+              "country": "EN"
             }
           }
         ]
