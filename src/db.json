@@ -151,6 +151,96 @@
         "name": "No you",
         "code": "ast_02"
       }
+    ],
+    "orderedResultKeys": [
+      {
+        "code": "EQUITY_CAPITAL",
+        "name": "Equity capital"
+      },
+      {
+        "code": "RISK",
+        "name": "Risk"
+      },
+      {
+        "code": "REFINANCING",
+        "name": "Refinancing"
+      },
+      {
+        "code": "IRS",
+        "name": "IRS"
+      },
+      {
+        "code": "HEDGE_COSTS",
+        "name": "Hedge costs"
+      },
+      {
+        "code": "ETP_FEASIBILITY",
+        "name": "ETP Feasibility"
+      },
+      {
+        "code": "FORWARD",
+        "name": "Forward"
+      },
+      {
+        "code": "DUTY_COSTS",
+        "name": "Duty costs"
+      },
+      {
+        "code": "PROPERTY_CONTRIBUTION",
+        "name": "Property contribution"
+      },
+      {
+        "code": "PROFIT_CONTRIBUTION",
+        "name": "Profit contribution"
+      },
+      {
+        "code": "CUSTOMER_CONTRIBUTION",
+        "name": "Customer contribution"
+      },
+      {
+        "code": "MARKET_BALANCING",
+        "name": "Market balancing"
+      },
+      {
+        "code": "FOREIGN_SURCHARGE",
+        "name": "Foreign surcharge"
+      },
+      {
+        "code": "PRODUCTION",
+        "name": "Production"
+      },
+      {
+        "code": "DISTRIBUTION_COSTS",
+        "name": "Distribution costs"
+      },
+      {
+        "code": "MINIMAL_OFFER",
+        "name": "Minimal offer"
+      },
+      {
+        "code": "SURCHARGE",
+        "name": "Surcharge"
+      },
+      {
+        "code": "VOLUME_DISCOUNT",
+        "name": "Volume discount"
+      },
+      {
+        "code": "FLOOR",
+        "name": "Floor"
+      },
+      {
+        "code": "COMPETENCE_LEVEL_1",
+        "name": "Competence level 1"
+      },
+      {
+        "code": "COMPETENCE_LEVEL_2",
+        "name": "competence level 2"
+      },
+      {
+        "code": "RECOMMENDED_INTEREST_RATE",
+        "name": "Recommended interest rate"
+      }
     ]
   },
   "calculator": {
@@ -177,7 +267,7 @@
           "additionalSecurityManagement": {
             "additionalSecurities": [
               {
-                "amount": 40000000,
+                "amount": 999990,
                 "additionalSecurity": "ast_01"
               }
             ]
@@ -188,7 +278,7 @@
         "currentTranche": {
           "productCode": "FIXED_RATE_MORTGAGE",
           "amountPiece": 40000,
-          "payOutDate": "26.01.2020",
+          "payOutDate": "27.01.2020",
           "period": 2
         }
       },
@@ -203,7 +293,7 @@
             "address": {
               "zipCode": "70000",
               "city": "HCM",
-              "country": "EN"
+              "country": "CH"
             }
           }
         ]

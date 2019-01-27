@@ -35612,10 +35612,10 @@ var GlobalEvent = function GlobalEvent() {
   _classCallCheck(this, GlobalEvent);
 
   this.events = {
-    "click": []
+    "click": {}
   };
 
-  this.addEvent = function (type, listener) {
+  this.addEvent = function (type, key, listener) {
     if (typeof type !== "string") {
       console.warn("Event type must be a string! but got: " + (typeof type === "undefined" ? "undefined" : _typeof(type)));
       return;
@@ -35627,13 +35627,25 @@ var GlobalEvent = function GlobalEvent() {
     if (type !== "click") {
       console.log("Event type [" + type + "] do not supported yet!");
     }
-    _this.events[type][_this.events[type].length] = listener;
+    var keyAsString = '' + key;
+    if (keyAsString === '') {
+      console.log("Listener key must not be blank");
+      return;
+    }
+    _this.events[type][keyAsString] = listener;
   };
 
-  var events = this.events;
+  this.removeEvent = function (type, key) {
+    var keyAsString = '' + key;
+    if (_this.events[type]) {
+      _this.events[type][keyAsString] = undefined;
+    }
+  };
+
+  var storedEvents = this.events;
   document.body.addEventListener("click", function (originalEvent) {
-    events["click"].forEach(function (listener) {
-      listener(originalEvent);
+    Object.values(storedEvents["click"]).forEach(function (listener) {
+      listener && listener(originalEvent);
     });
   });
 };
@@ -35641,29 +35653,6 @@ var GlobalEvent = function GlobalEvent() {
 exports.default = new GlobalEvent();
 
 },{}],62:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var IncreasementIndexer = function IncreasementIndexer() {
-  var _this = this;
-
-  _classCallCheck(this, IncreasementIndexer);
-
-  this.index = 0;
-
-  this.next = function () {
-    return ++_this.index;
-  };
-};
-
-exports.default = new IncreasementIndexer();
-
-},{}],63:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35692,7 +35681,7 @@ var StaticStore = function StaticStore() {
 
 exports.default = new StaticStore();
 
-},{}],64:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35710,7 +35699,7 @@ var StringUtil = {
 
 exports.default = StringUtil;
 
-},{}],65:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35739,11 +35728,15 @@ var UniqueId = function UniqueId() {
       return e == _this.current;
     }).length === 0;
   };
+
+  this.next = function () {
+    return _this.current++;
+  };
 };
 
 exports.default = new UniqueId();
 
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35915,7 +35908,7 @@ AdditionalSecurities.propTypes = {
 };
 exports.default = AdditionalSecurities;
 
-},{"../common/StaticStore":63,"../common/UniqueId":65,"./Dropdown":68,"./InputNumber":73,"prop-types":21,"react":46}],67:[function(require,module,exports){
+},{"../common/StaticStore":62,"../common/UniqueId":64,"./Dropdown":67,"./InputNumber":72,"prop-types":21,"react":46}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35961,7 +35954,7 @@ var Blocker = function Blocker(_ref) {
 
 exports.default = Blocker;
 
-},{"react":46}],68:[function(require,module,exports){
+},{"react":46}],67:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35980,9 +35973,9 @@ var _InputBlock2 = require('./InputBlock');
 
 var _InputBlock3 = _interopRequireDefault(_InputBlock2);
 
-var _IncreasementIndexer = require('../common/IncreasementIndexer');
+var _UniqueId = require('../common/UniqueId');
 
-var _IncreasementIndexer2 = _interopRequireDefault(_IncreasementIndexer);
+var _UniqueId2 = _interopRequireDefault(_UniqueId);
 
 var _GlobalEvent = require('../common/GlobalEvent');
 
@@ -36005,17 +35998,18 @@ var Dropdown = function (_InputBlock) {
     var _this = _possibleConstructorReturn(this, (Dropdown.__proto__ || Object.getPrototypeOf(Dropdown)).call(this, props));
 
     _this.componentDidMount = function () {
-      /*
-      let index = this.state.index;
-      console.error("cout << drop down: "+index+" did mount");
-      GlobalEvent.addEvent("click", function(originalEvent){
-        console.error("cout << try to control: ", index);
+      var currentId = _this.state.id;
+      var closeCallback = _this.close;
+      _GlobalEvent2.default.addEvent("click", _this.state.id, function (e) {
+        var ik = e.originalTarget.getAttribute("ik");
+        if (ik !== currentId) {
+          closeCallback();
+        }
       });
-      */
     };
 
     _this.componentWillUnmount = function () {
-      console.log("cout << component will unmount");
+      _GlobalEvent2.default.removeEvent("click", _this.state.id);
     };
 
     _this.toggle = function () {
@@ -36053,7 +36047,7 @@ var Dropdown = function (_InputBlock) {
 
       var callback = function callback(val) {
         return function () {
-          _this.toggle();
+          _this.close();
           changeListener(val);
         };
       };
@@ -36065,7 +36059,12 @@ var Dropdown = function (_InputBlock) {
         { className: styleClass },
         _react2.default.createElement(
           'p',
-          { className: 'dropdown__screen', onClick: _this.toggle, title: screenVal },
+          {
+            ik: _this.state.id,
+            className: 'dropdown__screen',
+            onClick: _this.toggle,
+            title: screenVal
+          },
           screenVal
         ),
         _react2.default.createElement(
@@ -36098,7 +36097,8 @@ var Dropdown = function (_InputBlock) {
     };
 
     _this.state = {
-      index: _IncreasementIndexer2.default.next()
+      id: "dropdown::" + _UniqueId2.default.next(),
+      isOpen: false
     };
 
     _this.toggle = _this.toggle.bind(_this);
@@ -36125,7 +36125,7 @@ Dropdown.propTypes = {
 };
 exports.default = Dropdown;
 
-},{"../common/GlobalEvent":61,"../common/IncreasementIndexer":62,"./InputBlock":69,"prop-types":21,"react":46}],69:[function(require,module,exports){
+},{"../common/GlobalEvent":61,"../common/UniqueId":64,"./InputBlock":68,"prop-types":21,"react":46}],68:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36201,7 +36201,7 @@ InputBlock.propTypes = {
 };
 exports.default = InputBlock;
 
-},{"prop-types":21,"react":46}],70:[function(require,module,exports){
+},{"prop-types":21,"react":46}],69:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36284,7 +36284,7 @@ InputBool.propTypes = {
   value: _propTypes2.default.bool };
 exports.default = InputBool;
 
-},{"../common/StringUtil":64,"./InputBlock":69,"prop-types":21,"react":46}],71:[function(require,module,exports){
+},{"../common/StringUtil":63,"./InputBlock":68,"prop-types":21,"react":46}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36442,7 +36442,7 @@ InputCollector.propTypes = {
 
 exports.default = InputCollector;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":63,"./AdditionalSecurities":66,"./Dropdown":68,"./InputBool":70,"./InputDate":72,"./InputNumber":73,"./InputText":74,"prop-types":21,"react":46}],72:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":62,"./AdditionalSecurities":65,"./Dropdown":67,"./InputBool":69,"./InputDate":71,"./InputNumber":72,"./InputText":73,"prop-types":21,"react":46}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36512,7 +36512,7 @@ InputDate.propTypes = {
   value: _propTypes2.default.object };
 exports.default = InputDate;
 
-},{"./InputBlock":69,"prop-types":21,"react":46,"react-datepicker":23}],73:[function(require,module,exports){
+},{"./InputBlock":68,"prop-types":21,"react":46,"react-datepicker":23}],72:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36571,7 +36571,7 @@ InputNumber.propTypes = {
   value: _propTypes2.default.number };
 exports.default = InputNumber;
 
-},{"./InputText":74,"prop-types":21,"react":46}],74:[function(require,module,exports){
+},{"./InputText":73,"prop-types":21,"react":46}],73:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36629,7 +36629,7 @@ InputText.propTypes = {
   value: _propTypes2.default.string };
 exports.default = InputText;
 
-},{"./InputBlock":69,"prop-types":21,"react":46}],75:[function(require,module,exports){
+},{"./InputBlock":68,"prop-types":21,"react":46}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36650,6 +36650,10 @@ var _TableRow = require('./TableRow');
 
 var _TableRow2 = _interopRequireDefault(_TableRow);
 
+var _StaticStore = require('../common/StaticStore');
+
+var _StaticStore2 = _interopRequireDefault(_StaticStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36657,8 +36661,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var orderedKeys = ["EQUITY_CAPITAL", "RISK", "REFINANCING", "IRS", "HEDGE_COSTS", "ETP_FEASIBILITY", "FORWARD", "DUTY_COSTS", "PROPERTY_CONTRIBUTION", "PROFIT_CONTRIBUTION", "CUSTOMER_CONTRIBUTION", "MARKET_BALANCING", "FOREIGN_SURCHARGE", "PRODUCTION", "DISTRIBUTION_COSTS", "MINIMAL_OFFER", "SURCHARGE", "RECOMMENDED_INTEREST_RATE", "MORTGAGE_SPLITTING_1", "MORTGAGE_SPLITTING_2", "MORTGAGE_SPLITTING_3", "MORTGAGE_SPLITTING_4", "VOLUME_DISCOUNT", "FLOOR", "COMPETENCE_LEVEL_1", "COMPETENCE_LEVEL_2", "COMPETENCE_LEVEL_3", "COMPETENCE_LEVEL_4", "COMPETENCE_LEVEL_5", "COMPETENCE_LEVEL_6", "COMPETENCE_LEVEL_7", "COMPETENCE_LEVEL_8", "RAW_RECOMMENDED_INTEREST_RATE"];
 
 var ResultTable = function (_React$Component) {
   _inherits(ResultTable, _React$Component);
@@ -36676,15 +36678,15 @@ var ResultTable = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ResultTable.__proto__ || Object.getPrototypeOf(ResultTable)).call.apply(_ref, [this].concat(args))), _this), _this.convertResultToRows = function (results) {
       if (!Array.isArray(results) || results.length < 1) return [];
-
-      return orderedKeys.map(function (key) {
-        var row = {};
-        row.key = key;
-        row.label = key;
-        row.cells = results.map(function (item) {
-          return item['ruleResults'][key];
-        });
-        return row;
+      var orderedResultKeys = _StaticStore2.default.getStore().orderedResultKeys || [];
+      return orderedResultKeys.map(function (ork) {
+        return {
+          key: ork.code,
+          label: ork.name,
+          cells: results.map(function (item) {
+            return item['ruleResults'][ork.code];
+          })
+        };
       });
     }, _this.extractColumnHeader = function (results) {
       if (!Array.isArray(results) || results.length < 1) return undefined;
@@ -36692,8 +36694,8 @@ var ResultTable = function (_React$Component) {
       var header = {};
       header.key = 'resultTableHeader';
       header.label = 'Category \\ Period';
-      header.cells = results.map(function (item, index) {
-        return item.period || '__' + index;
+      header.cells = results.map(function (item) {
+        return item.period;
       });
       return header;
     }, _this.render = function () {
@@ -36725,7 +36727,7 @@ ResultTable.propTypes = {
 };
 exports.default = ResultTable;
 
-},{"./TableRow":76,"prop-types":21,"react":46}],76:[function(require,module,exports){
+},{"../common/StaticStore":62,"./TableRow":75,"prop-types":21,"react":46}],75:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36800,7 +36802,7 @@ TableRow.propTypes = {
 };
 exports.default = TableRow;
 
-},{"prop-types":21,"react":46}],77:[function(require,module,exports){
+},{"prop-types":21,"react":46}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36874,7 +36876,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return { isReady: state.isReady };
 })(App);
 
-},{"../common/StaticStore":63,"../component/Blocker":67,"../container/InputCollector":78,"../container/ResultTable":79,"react":46,"react-redux":38}],78:[function(require,module,exports){
+},{"../common/StaticStore":62,"../component/Blocker":66,"../container/InputCollector":77,"../container/ResultTable":78,"react":46,"react-redux":38}],77:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36899,7 +36901,7 @@ var stateToProps = function stateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(stateToProps)(_InputCollector2.default);
 
-},{"../component/InputCollector":71,"react":46,"react-redux":38}],79:[function(require,module,exports){
+},{"../component/InputCollector":70,"react":46,"react-redux":38}],78:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36922,7 +36924,7 @@ exports.default = (0, _reactRedux.connect)(function (state) {
   return state.calculationResult;
 })(_ResultTable2.default);
 
-},{"../component/ResultTable":75,"react":46,"react-redux":38}],80:[function(require,module,exports){
+},{"../component/ResultTable":74,"react":46,"react-redux":38}],79:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -36970,7 +36972,7 @@ window.onload = function () {
   store.dispatch((0, _action.loadComboboxInput)());
 };
 
-},{"./action":58,"./container/App":77,"./reducer":84,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],81:[function(require,module,exports){
+},{"./action":58,"./container/App":76,"./reducer":83,"react":46,"react-dom":26,"react-redux":38,"redux":49,"redux-logger":47,"redux-thunk":48}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36999,7 +37001,7 @@ var CalculationResult = function CalculationResult() {
 
 exports.default = CalculationResult;
 
-},{"../action":58}],82:[function(require,module,exports){
+},{"../action":58}],81:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37037,7 +37039,7 @@ var IsReady = function IsReady() {
 
 exports.default = IsReady;
 
-},{"../action":58,"../common/StaticStore":63}],83:[function(require,module,exports){
+},{"../action":58,"../common/StaticStore":62}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37150,7 +37152,7 @@ var UserInput = function UserInput() {
 
 exports.default = UserInput;
 
-},{"../action":58,"../common/Constant":59,"../common/StaticStore":63,"moment":14}],84:[function(require,module,exports){
+},{"../action":58,"../common/Constant":59,"../common/StaticStore":62,"moment":14}],83:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37181,4 +37183,4 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./CalculationResult":81,"./IsReady":82,"./UserInput":83,"redux":49}]},{},[80]);
+},{"./CalculationResult":80,"./IsReady":81,"./UserInput":82,"redux":49}]},{},[79]);

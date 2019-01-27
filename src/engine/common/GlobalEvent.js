@@ -1,19 +1,19 @@
 
 class GlobalEvent {
   events = {
-    "click": []
+    "click": {}
   };
 
   constructor() {
-    const events = this.events;
+    const storedEvents = this.events;
     document.body.addEventListener("click", function(originalEvent) {
-      events["click"].forEach(listener => {
-        listener(originalEvent);
+      Object.values(storedEvents["click"]).forEach(listener => {
+        listener && listener(originalEvent);
       });
     });
   }
   
-  addEvent = (type, listener) => {
+  addEvent = (type, key, listener) => {
     if (typeof(type) !== "string") {
       console.warn("Event type must be a string! but got: " + typeof(type));
       return;
@@ -25,8 +25,20 @@ class GlobalEvent {
     if (type !== "click") {
       console.log("Event type [" + type + "] do not supported yet!");
     }
-    this.events[type][this.events[type].length] = listener;
-  }
+    var keyAsString = ''+key;
+    if (keyAsString === '') {
+      console.log("Listener key must not be blank");
+      return;
+    }
+    this.events[type][keyAsString] = listener;
+  };
+
+  removeEvent = (type, key) => {
+    var keyAsString = ''+key;
+    if (this.events[type]) {
+      this.events[type][keyAsString] = undefined;
+    }
+  };
 
 }
 

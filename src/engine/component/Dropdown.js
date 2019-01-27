@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import InputBlock from './InputBlock'
-import IncreasementIndexer from '../common/IncreasementIndexer'
+import UniqueId from '../common/UniqueId'
 import GlobalEvent from '../common/GlobalEvent'
 
 class Dropdown extends InputBlock {
@@ -18,7 +18,8 @@ class Dropdown extends InputBlock {
     super(props)
     
     this.state = {
-      index: IncreasementIndexer.next()
+      id: "dropdown::" + UniqueId.next(),
+      isOpen: false
     }
 
     this.toggle = this.toggle.bind(this)
@@ -27,17 +28,18 @@ class Dropdown extends InputBlock {
   }
 
   componentDidMount = () => {
-    /*
-    let index = this.state.index;
-    console.error("cout << drop down: "+index+" did mount");
-    GlobalEvent.addEvent("click", function(originalEvent){
-      console.error("cout << try to control: ", index);
+    var currentId = this.state.id;
+    var closeCallback = this.close;
+    GlobalEvent.addEvent("click", this.state.id, function(e) {
+      var ik = e.originalTarget.getAttribute("ik");
+      if (ik !== currentId) {
+        closeCallback();
+      }
     });
-    */
   }
 
   componentWillUnmount = () => {
-    console.log("cout << component will unmount");
+    GlobalEvent.removeEvent("click", this.state.id);
   }
 
   toggle = () => {
@@ -74,7 +76,7 @@ class Dropdown extends InputBlock {
     const styleClass = 'dropdown' + (isOpen ? ' open' : '')
 
     const callback = val => () => {
-      this.toggle()
+      this.close()
       changeListener(val)
     }
 
@@ -82,7 +84,12 @@ class Dropdown extends InputBlock {
 
     return (
       <div className={styleClass}>
-        <p className="dropdown__screen" onClick={this.toggle} title={screenVal}>
+        <p
+            ik={this.state.id}
+            className="dropdown__screen"
+            onClick={this.toggle}
+            title={screenVal}
+        >
           {screenVal}
         </p>
         <div className="dropdown__slider">

@@ -13,6 +13,8 @@ class UniqueId {
   acceptable = excepts => {
     return excepts.filter(e => e == this.current).length === 0;
   };
+
+  next = () => this.current++;
 }
 
 export default new UniqueId;
