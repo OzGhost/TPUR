@@ -215,7 +215,8 @@
   border-collapse: collapse;
   width: 100%;
   margin: 40px 0;
-  color: white; }
+  color: white;
+  table-layout: fixed; }
   .result-table tr:nth-child(odd) {
     background: #2c3e50; }
   .result-table tr:nth-child(even) {

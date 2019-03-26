@@ -36965,10 +36965,9 @@ window.onload = function () {
     _react2.default.createElement(_App2.default, null)
   ), document.getElementById('frame'));
 
-  /*
-  window.TPUR.config.comboboxInfoURI = window.comboboxLink
-  window.TPUR.config.calculatorURI = window.calculationLink
-  */
+  window.TPUR.config.comboboxInfoURI = window.comboboxLink;
+  window.TPUR.config.calculatorURI = window.calculationLink;
+  console.log("cout << got links: ", window.comboboxLink, window.calculationLink);
   store.dispatch((0, _action.loadComboboxInput)());
 };
 

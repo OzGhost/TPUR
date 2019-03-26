@@ -41,6 +41,22 @@ module.exports = function(grunt) {
             cwd: 'src',
             src: ['index.html', 'configuration.js'],
             dest: './dest/'
+          },
+          {
+            src: './src/configuration.js',
+            dest: '/zk/pMortgage/pricing_calculator_test/webContent/resources/js/configuration_v4.js'
+          },
+          {
+            src: './dest/index_webpack.js',
+            dest: '/zk/pMortgage/pricing_calculator_test/webContent/resources/js/index_v4.js'
+          },
+          {
+            src: './dest/index_webpack.js',
+            dest: '/tmp/index.js'
+          },
+          {
+            src: './dest/index.css',
+            dest: '/zk/pMortgage/pricing_calculator_test/webContent/resources/css/index_v4.css'
           }
         ]
       }
@@ -62,10 +78,12 @@ module.exports = function(grunt) {
           filename: 'index_webpack.js',
           path: path.resolve(__dirname, 'dest')
         },
-        mode: 'production',
+        mode: 'development',// development | production
+        /*
         optimization: {
           minimizer: [new UglifyJsPlugin()]
         },
+        */
         module: {
           rules: [
             {
@@ -99,6 +117,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-webpack');
 
-  grunt.registerTask('default', ['sass', 'copy', 'browserify']);
+  grunt.registerTask('default', ['sass', 'webpack', 'copy']);
 };
 

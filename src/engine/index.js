@@ -23,10 +23,8 @@ window.onload = function() {
     document.getElementById('frame')
   )
 
-  /*
   window.TPUR.config.comboboxInfoURI = window.comboboxLink
   window.TPUR.config.calculatorURI = window.calculationLink
-  */
   store.dispatch(loadComboboxInput())
 }
 

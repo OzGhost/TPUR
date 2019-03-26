@@ -267,7 +267,7 @@
           "additionalSecurityManagement": {
             "additionalSecurities": [
               {
-                "amount": 999990,
+                "amount": 40000000,
                 "additionalSecurity": "ast_01"
               }
             ]
@@ -278,7 +278,7 @@
         "currentTranche": {
           "productCode": "FIXED_RATE_MORTGAGE",
           "amountPiece": 40000,
-          "payOutDate": "27.01.2020",
+          "payOutDate": "21.03.2020",
           "period": 2
         }
       },
